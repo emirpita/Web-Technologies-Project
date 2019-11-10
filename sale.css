@@ -1,0 +1,172 @@
+.meni {
+    background-color: #76aad8;
+    border-style: solid;
+    border-color: greenyellow;
+    border-width: 1px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    top: 25px;
+    height: 60px;
+    width: 825px;
+}
+
+.meni li {
+    margin-top: 20px;
+    position: relative;
+    text-align: center;
+    width: 15%;
+    top: 0;
+    display: inline-block;
+}
+
+a {
+    color: black;
+}
+  
+#id { 
+    text-decoration: none;
+}
+
+.logo {
+    position: absolute;
+    width: 20%;
+    height: 50%;
+    top: 0;
+    left: 48%;
+    transform: translateY(-90%);
+}
+
+.sadrzaj {
+    margin-top: 2.5%;
+    border-style: solid;
+    border-color: greenyellow;
+    background-color: #76aad8;
+    border-width: 1px;
+    width: 825px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.tabelaSala {
+    background-color: #76aad8;
+    height: 120px;
+    position: relative;
+    margin-top: 30px;
+    top: 0;
+    border-collapse: collapse;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.headerRedni {
+    background-color: lightgrey;
+    text-align: left;
+    width:25%;
+    padding: 7px;
+    margin-left: auto;
+    margin-right: auto;
+    border: 2px solid lightgrey;
+}
+
+
+.headerSprat {
+    background-color: rgb(128, 128, 128);
+    text-align: right;
+    padding: 7px;
+    margin-left: auto;
+    margin-right: auto;
+    border: 2px solid rgba(201, 200, 200, 0.397);
+}
+
+#tekstSprat {
+    text-align: center;
+}
+
+.sala {
+    background-color: white;
+    border: 2px solid rgb(77, 73, 73);
+    margin-left: auto;
+    margin-right: auto;
+    vertical-align: top;
+}
+
+.zauzetaSala {
+    border: 2px solid rgb(77, 73, 73);
+    margin-left: auto;
+    margin-right: auto;
+    vertical-align: top;
+    background-color:orangered;
+}
+
+.slobodnaSala {
+    border: 2px solid rgb(77, 73, 73);
+    margin-left: auto;
+    margin-right: auto;
+    vertical-align: top;
+    background-color:lightgreen;
+}
+
+.kancelarija {
+    border: 2px solid rgb(77, 73, 73);
+    margin-left: auto;
+    margin-right: auto;
+    vertical-align: top;
+    background-color:lightgrey;
+}
+
+@media only screen and (max-width: 600px) {
+
+   
+    .meni li{
+        margin-top: 0px;
+        margin-right: 4%;
+        display: block;
+       }
+       
+       .meni{
+        height: 100px;
+        width: 600px;
+      }
+    
+    .logo{
+        transform: translateY(-50%);
+    }
+    
+    
+    .sadrzaj{
+        height: 400px;
+        width:600px;
+        text-align: left;
+    }
+    
+    span {
+        display: inline-block;
+        padding: 10px 10px 0 50px;
+    }
+
+    .headerRedni{
+        display:none;
+    }
+
+    .headerSprat{
+        display:none;
+    }
+
+    #sala{
+        width: 600px;
+    }
+    td {
+        width:1px;
+        height: 5px;
+        padding: 10px 5px 10px 5px;
+    }
+
+    .tabelaSala{
+        width: 0.5%;
+        padding: 10px 5px 10px 5px;
+       
+    }
+
+  }
