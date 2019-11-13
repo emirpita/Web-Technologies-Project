@@ -124,8 +124,8 @@ ul {
   border-color: royalblue;
 }
 
-.dani li .prazanDan {
-    border-color: lightsteelblue;
+.prazanDan {
+    visibility: hidden;
 }
 
 .slobodna {
@@ -147,6 +147,25 @@ ul {
     height: 10px;
     width: 100%;
 }
+
+.dugmeSljedeci {
+    background-color: lightsteelblue;
+    color: black;
+    border: 2px solid royalblue;
+    margin-left:32.5%;
+}
+  
+.dugmeSljedeci:hover {background-color: royalblue;}
+  
+.dugmePrethodni {
+    background-color: lightsteelblue;
+    color: black;
+    border: 2px solid royalblue;
+    display: inline-block;
+    margin-top: 1%;
+}
+  
+.dugmePrethodni:hover {background-color: royalblue;}
 
 @media only screen and (max-width: 600px) {
 
