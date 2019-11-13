@@ -25,7 +25,7 @@ a {
     color: black;
 }
   
-#id { 
+#trenutna { 
     text-decoration: none;
 }
 
@@ -171,12 +171,11 @@ ul {
 
 @media only screen and (max-width: 600px) {
 
-   
-    .meni li {
+    .meni li{
         margin-top: 0px;
         margin-right: 4%;
         display: block;
-     }
+    }
        
     .meni{
         height: 100px;
@@ -187,15 +186,64 @@ ul {
         transform: translateY(-50%);
     }
     
-    
     .sadrzaj{
-        height: 400px;
+       
         width:600px;
         text-align: left;
     }
+
+    .sadrzaj select {
+        padding: 10px;
+        margin-left: 9%;
+    }
+
+    .sadrzaj label {
+        margin-left: 3%;
+    }
+
+    input {
+        margin-top: 11px;
+        margin-left: 1%;
+    }
     
-    span {
+    .dugmeSljedeci {
+        margin-left:12%;
+    }
+    
+    .dugmePrethodni {
+        margin-top: 1%;
+        margin-left: 2%;
+    }
+
+    .month {
+        display: none;
+    }
+
+    .dani {
         display: inline-block;
-        padding: 10px 10px 0 50px;
+    }
+
+    .naziviDana {
+        display: inline-block;
+    }
+
+    #zaPrikaz {
+        display: block;
+    }
+
+    .naziviDana li {
+        display: block;
+        width: 30px;
+        margin-bottom: 8px;
+        height: 25px;
+    }
+
+    .dani li:nth-child(-n+8) {
+        display: block;
+        width: 30px;
+    }
+
+    .dani li:nth-child(n+8) {
+        display: none;
     }
   }
