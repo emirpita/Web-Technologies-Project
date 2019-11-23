@@ -1,83 +1,7 @@
-// podaci za punjenje
-var periodicnaSala1 = {
-	dan: 5,
-	semestar: "zimski",
-	pocetak: "09:00",
-	kraj: "10:00",
-	naziv: "MA",
-	predavac: "profesor"
-}; //neispravan podatak
-var periodicnaSala2 = {
-	dan: 0,
-	semestar: "zimski",
-	pocetak: "10:00",
-	kraj: "13:00",
-	naziv: "MA",
-	predavac: "profesor"
-};
+// konstanta 
+const MAX_BROJ_DANA = 42;
 
-var periodicnaSala3 = {
-	dan: 5,
-	semestar: "ljetni",
-	pocetak: "12:00",
-	kraj: "13:00",
-	naziv: "1-02",
-	predavac: "profesor"
-};
-var periodicnaSala4 = {
-	dan: 3,
-	semestar: "ljetni",
-	pocetak: "12:00",
-	kraj: "13:00",
-	naziv: "VA1",
-	predavac: "profesor"
-};
-
-var periodicneSale = [periodicnaSala1, periodicnaSala2, periodicnaSala3, periodicnaSala4];
-
-var vanrednaSala1 = {
-	datum: "10.10.2019",
-	pocetak: "10:10",
-	kraj: "12:00",
-	naziv: "MA",
-	predavac: "profesor"
-};
-var vanrednaSala2 = {
-	datum: "31.11.2019",
-	pocetak: "13:00",
-	kraj: "17:00",
-	naziv: "MA",
-	predavac: "profesor"
-}; //neispravan podatak
-var vanrednaSala3 = {
-	datum: "17.11.2019",
-	pocetak: "13:00",
-	kraj: "17:00",
-	naziv: "MA",
-	predavac: "profesor"
-};
-var vanrednaSala4 = {
-	datum: "09.09.2019",
-	pocetak: "13:00",
-	kraj: "17:00",
-	naziv: "VA2",
-	predavac: "profesor"
-};
-var vanrednaSala5 = {
-	datum: "09.11.2019",
-	pocetak: "13:00",
-	kraj: "17:00",
-	naziv: "0-01",
-	predavac: "profesor"
-};
-
-var vanredneSale = [vanrednaSala1, vanrednaSala2, vanrednaSala3, vanrednaSala4, vanrednaSala5];
-
-var ljetniSemestar = ["Februar", "Mart", "April", "Maj", "Juni"];
-var zimskiSemestar = ["Januar", "Oktobar", "Novembar", "Decembar"];
-var listaMjeseci = ["Januar", "Februar", "Mart", "April", "Maj", "Juni", "Juli", "August", "Septembar", "Oktobar", "Novembar", "Decembar"];
-
-var mapaPocetnihDana = new Map([
+const POCETNI_DANI = new Map([
 	[0, 1],
 	[1, 4],
 	[2, 4],
@@ -91,7 +15,8 @@ var mapaPocetnihDana = new Map([
 	[10, 4],
 	[11, 6]
 ]);
-var mapaMjeseciSaBrojemDana = new Map([
+
+const TRAJANJA_MJESECI_U_DANIMA = new Map([
 	[0, 31],
 	[1, 28],
 	[2, 31],
@@ -106,32 +31,108 @@ var mapaMjeseciSaBrojemDana = new Map([
 	[11, 31]
 ]);
 
-var unesenPocetak = 0;
-var unesenKraj = 0;
+const LJETNI_SEMESTAR = ["Februar", "Mart", "April", "Maj", "Juni"];
+const ZIMSKI_SEMESTAR = ["Januar", "Oktobar", "Novembar", "Decembar"];
+const NAZIVI_MJESECA = ["Januar", "Februar", "Mart", "April", "Maj", "Juni", "Juli", "August", "Septembar", "Oktobar", "Novembar", "Decembar"];
 
-// konstanta 
-const MAX_BROJ_DANA = 42; 
-
+// pomocne varijable
 var pomocnaMjesec = 10;
+
+// pocetni podaci
+var periodicnaSala1 = {
+	dan: 5,
+	semestar: "zimski",
+	pocetak: "09:00",
+	kraj: "10:00",
+	naziv: "MA",
+	predavac: "nastavnik1"
+}; //neispravan podatak
+var periodicnaSala2 = {
+	dan: 0,
+	semestar: "zimski",
+	pocetak: "10:00",
+	kraj: "13:00",
+	naziv: "MA",
+	predavac: "nastavnik1"
+};
+
+var periodicnaSala3 = {
+	dan: 5,
+	semestar: "ljetni",
+	pocetak: "12:00",
+	kraj: "13:00",
+	naziv: "1-02",
+	predavac: "nastavnik2"
+};
+var periodicnaSala4 = {
+	dan: 3,
+	semestar: "ljetni",
+	pocetak: "12:00",
+	kraj: "13:00",
+	naziv: "VA1",
+	predavac: "nastavnik2"
+};
+
+var listaPeriodicnihSala = [periodicnaSala1, periodicnaSala2, periodicnaSala3, periodicnaSala4];
+
+var vanrednaSala1 = {
+	datum: "1.10.2019",
+	pocetak: "10:10",
+	kraj: "12:00",
+	naziv: "MA",
+	predavac: "nastavnik3"
+};
+var vanrednaSala2 = {
+	datum: "31.11.2019",
+	pocetak: "13:00",
+	kraj: "17:00",
+	naziv: "MA",
+	predavac: "nastavnik3"
+}; //neispravan podatak
+var vanrednaSala3 = {
+	datum: "14.10.2019",
+	pocetak: "13:00",
+	kraj: "17:00",
+	naziv: "MA",
+	predavac: "nastavnik4"
+};
+var vanrednaSala4 = {
+	datum: "09.01.2019",
+	pocetak: "13:00",
+	kraj: "17:00",
+	naziv: "VA2",
+	predavac: "nastavnik5"
+};
+var vanrednaSala5 = {
+	datum: "09.11.2019",
+	pocetak: "13:00",
+	kraj: "17:00",
+	naziv: "0-01",
+	predavac: "nastavnik4"
+};
+
+var listaVanrednihSala = [vanrednaSala1, vanrednaSala2, vanrednaSala3, vanrednaSala4, vanrednaSala5];
+
+
 
 let Kalendar = (function() {
 
 	function obojiZauzecaImpl(kalendarRef, mjesec, sala, pocetak, kraj) {
 
-		let pocetniDan = mapaPocetnihDana.get(mjesec);
+		let pocetniDan = POCETNI_DANI.get(mjesec);
 		let salaIzRezervacije = sala;
 		if (pocetak != 0 && kraj != 0) {
-			for (let i = 0; i < periodicneSale.length; i++) {
-				if (jeLiValidnoPeriodicna(periodicneSale[i].dan, periodicneSale[i].pocetak, periodicneSale[i].kraj) == 1) {
-					let zauzeta = unutarVremena(pocetak, kraj, periodicneSale[i].pocetak, periodicneSale[i].kraj);
+			for (let i = 0; i < listaPeriodicnihSala.length; i++) {
+				if (validirajVrijednostiPeriodicna(listaPeriodicnihSala[i].dan, listaPeriodicnihSala[i].pocetak, listaPeriodicnihSala[i].kraj) == 1) {
+					let zauzeta = jeLiZauzetaUPeriodu(pocetak, kraj, listaPeriodicnihSala[i].pocetak, listaPeriodicnihSala[i].kraj);
 					if (zauzeta == 1) {
-						let prviDanZaBojiti = izracunajPocetniDan(pocetniDan, periodicneSale[i].dan);
-						if (periodicneSale[i].semestar == "zimski") {
-							if (periodicneSale[i].naziv == salaIzRezervacije) {
-								for (let m = 0; m < zimskiSemestar.length; m++) {
-									if (listaMjeseci[mjesec] == zimskiSemestar[m]) {
+						let prviDanZaBojiti = getPocetniDan(pocetniDan, listaPeriodicnihSala[i].dan);
+						if (listaPeriodicnihSala[i].semestar == "zimski") {
+							if (listaPeriodicnihSala[i].naziv == salaIzRezervacije) {
+								for (let m = 0; m < ZIMSKI_SEMESTAR.length; m++) {
+									if (NAZIVI_MJESECA[mjesec] == ZIMSKI_SEMESTAR[m]) {
 										let kucicaDan = document.getElementsByClassName("slobodna");
-										for (let v = prviDanZaBojiti; v < kucicaDan.length; v += 7) {
+										for (let v = prviDanZaBojiti; v < kucicaDan.length; v += 6) {
 											kucicaDan[v].className="zauzeta";
 										}
 
@@ -139,9 +140,9 @@ let Kalendar = (function() {
 								}
 							}
 						}
-						else if (periodicneSale[i].semestar == "ljetni") {
-							for (let m = 0; m < ljetniSemestar.length; m++) {
-								if (listaMjeseci[mjesec] == ljetniSemestar[m]) {
+						else if (listaPeriodicnihSala[i].semestar == "ljetni") {
+							for (let m = 0; m < LJETNI_SEMESTAR.length; m++) {
+								if (NAZIVI_MJESECA[mjesec] == LJETNI_SEMESTAR[m]) {
 									let kucicaDan = document.getElementsByClassName("slobodna");
 									for (let v = prviDanZaBojiti; v < kucicaDan.length; v += 7) {
 										kucicaDan[v].className = "zauzeta";
@@ -153,12 +154,12 @@ let Kalendar = (function() {
 				}
 			}
 
-			for (let i = 0; i < vanredneSale.length; i++) {
-				if (jeLiValidnoNeperiodicna(vanredneSale[i].datum, vanredneSale[i].pocetak, vanredneSale[i].kraj) == 1) {
-					let zauzeta = unutarVremena(pocetak, kraj, vanredneSale[i].pocetak, vanredneSale[i].kraj);
+			for (let i = 0; i < listaVanrednihSala.length; i++) {
+				if (validirajVrijednostiNeperiodicna(listaVanrednihSala[i].datum, listaVanrednihSala[i].pocetak, listaVanrednihSala[i].kraj) == 1) {
+					let zauzeta = jeLiZauzetaUPeriodu(pocetak, kraj, listaVanrednihSala[i].pocetak, listaVanrednihSala[i].kraj);
 					if (zauzeta == 1) {
-						if (vanredneSale[i].naziv == salaIzRezervacije) {
-							let datumSale = vanredneSale[i].datum;
+						if (listaVanrednihSala[i].naziv == salaIzRezervacije) {
+							let datumSale = listaVanrednihSala[i].datum;
 							let pom1 = datumSale.split(".");
 							let danSale = pom1[0];
 							danSale--;
@@ -177,8 +178,8 @@ let Kalendar = (function() {
 	}
 
 	function ucitajPodatkeImpl(periodicna, redovna) {
-		periodicneSale = periodicna.slice();
-		vanredneSale = redovna.slice();
+		listaPeriodicnihSala = periodicna.slice();
+		listaVanrednihSala = redovna.slice();
 	}
 
 	function iscrtajKalendarImpl(kalendarRef, mjesec) {
@@ -194,7 +195,7 @@ let Kalendar = (function() {
 		var listaNazivMjeseca = document.createElement("ul");
 		var tekstNazivMjeseca = document.createElement("li");
 		tekstNazivMjeseca.setAttribute("id", "trenutniMjesec");
-		tekstNazivMjeseca.innerHTML = listaMjeseci[mjesec];
+		tekstNazivMjeseca.innerHTML = NAZIVI_MJESECA[mjesec];
 		listaNazivMjeseca.append(tekstNazivMjeseca);
 		nazivMjeseca.append(listaNazivMjeseca);
 		kalendarRef.append(nazivMjeseca);
@@ -261,7 +262,7 @@ function sljedeci() {
 		kalendar.innerHTML = "";
 		let trenutniMjesec = new Date().getMonth();
 		Kalendar.iscrtajKalendar(kalendar, pomocnaMjesec);
-		Kalendar.obojiZauzeca(document.getElementsByClassName("kalendar"), pomocnaMjesec, document.getElementsByClassName("saleIzbor")[0].value,
+		Kalendar.obojiZauzeca(document.getElementsByClassName("kalendar"), pomocnaMjesec, document.getElementsByClassName("sale")[0].value,
 			document.getElementById("pocetak").value, document.getElementById("kraj").value);
 
 	}
@@ -293,12 +294,12 @@ function ucitajKalendar() {
 	let kalendar = document.getElementsByClassName("kalendar")[0];
 	kalendar.innerHTML = "";
 	Kalendar.iscrtajKalendar(kalendar, 10);
-	Kalendar.ucitajPodatke(periodicneSale, vanredneSale);
+	Kalendar.ucitajPodatke(listaPeriodicnihSala, listaVanrednihSala);
 	Kalendar.obojiZauzeca(document.getElementsByClassName("kalendar"), pomocnaMjesec, document.getElementsByClassName("sale")[0].value,
 		document.getElementById("pocetak").value, document.getElementById("kraj").value);
 }
 
-function izracunajPocetniDan(pocetniDan, danListe) {
+function getPocetniDan(pocetniDan, danListe) {
 	let prviDanZaBojiti = danListe;
 	if (pocetniDan == 6 && danListe != 6) {
 		prviDanZaBojiti = prviDanZaBojiti + 1;
@@ -326,7 +327,7 @@ function izracunajPocetniDan(pocetniDan, danListe) {
 	return prviDanZaBojiti;
 }
 
-function unutarVremena(pocetak, kraj, salaPocetak, salaKraj) {
+function jeLiZauzetaUPeriodu(pocetak, kraj, salaPocetak, salaKraj) {
 	let zauzeta = 0;
 	if (pocetak > salaPocetak && pocetak < salaKraj)
 		zauzeta = 1;
@@ -337,24 +338,16 @@ function unutarVremena(pocetak, kraj, salaPocetak, salaKraj) {
 	return zauzeta;
 }
 
-function unesenoVrijemeZaPocetak() {
-	unesenPocetak = 1;
-}
-
-function unesenoVrijemeZaKraj() {
-	unesenKraj = 1;
-}
-
 function refreshKalendar() {
 	let kalendar = document.getElementsByClassName("kalendar")[0];
 	kalendar.innerHTML = "";
 	Kalendar.iscrtajKalendar(kalendar, pomocnaMjesec);
-	Kalendar.ucitajPodatke(periodicneSale, vanredneSale);
+	Kalendar.ucitajPodatke(listaPeriodicnihSala, listaVanrednihSala);
 	Kalendar.obojiZauzeca(document.getElementsByClassName("kalendar"), pomocnaMjesec, document.getElementsByClassName("sale")[0].value,
 		document.getElementById("pocetak").value, document.getElementById("kraj").value);
 }
 
-function jeLiValidnoPeriodicna(danZaValidaciju, pocetakZaValidaciju, krajZaValidaciju) {
+function validirajVrijednostiPeriodicna(danZaValidaciju, pocetakZaValidaciju, krajZaValidaciju) {
 	if (danZaValidaciju > 6 || danZaValidaciju < 0) return 0;
 
 	var satiPocetak = pocetakZaValidaciju.split(":")[0];
@@ -370,13 +363,13 @@ function jeLiValidnoPeriodicna(danZaValidaciju, pocetakZaValidaciju, krajZaValid
 	return 1;
 }
 
-function jeLiValidnoNeperiodicna(datumZaValidaciju, pocetakZaValidaciju, krajZaValidaciju) {
+function validirajVrijednostiNeperiodicna(datumZaValidaciju, pocetakZaValidaciju, krajZaValidaciju) {
 	let pom1 = datumZaValidaciju.split(".");
 	let danSale = pom1[0];
 	let mjesecSale = pom1[1];
 	mjesecSale = parseInt(mjesecSale);
 	mjesecSale--;
-	let brojDanaMjeseca = mapaMjeseciSaBrojemDana.get(mjesecSale);
+	let brojDanaMjeseca = TRAJANJA_MJESECI_U_DANIMA.get(mjesecSale);
 
 	if (mjesecSale > 12 || mjesecSale < 0) return 0;
 	if (danSale > brojDanaMjeseca) return 0;
