@@ -1,4 +1,4 @@
-// konstanta 
+// konstante 
 const MAX_BROJ_DANA = 42;
 
 const POCETNI_DANI = new Map([
@@ -103,7 +103,6 @@ var vsLista = [{
 }];
 
 // pomocne funkcije globalnog opsega
-
 
 function crtaj(mjesec) {
 	let kalendar = document.getElementsByClassName("kalendar")[0];
@@ -273,8 +272,8 @@ let Kalendar = (function() {
 		var today = new Date();
 		var listaDana = ["PON", "UTO", "SRI", "CET", "PET", "SUB", "NED"];
 		var trenutnaGodina = today.getFullYear();
-		var firstDay = (new Date(trenutnaGodina + "-" + mjesec + "-01")).getDay() + 2;
-		var daysInMonth = 32 - new Date(trenutnaGodina, mjesec, 32).getDate();
+		var prviDanUMjesecu = (new Date(trenutnaGodina + "-" + mjesec + "-01")).getDay() + 2;
+		var brojDana = parseInt(TRAJANJA_MJESECI_U_DANIMA.get(mjesec));
 
 		// Dodajemo naziv mjeseca u kalendar
 		var nazivMjeseca = document.createElement("div");
@@ -298,14 +297,14 @@ let Kalendar = (function() {
 		kalendarRef.append(listaNaziviDana);
 
 		// dodajemo listu sa danima
-		if (mjesec == 4 || mjesec == 6 || mjesec == 9 || mjesec == 11) firstDay--;
-		if (mjesec == 2) firstDay -= 3;
-		if (mjesec == 0) firstDay = 1;
+		if (mjesec == 4 || mjesec == 6 || mjesec == 9 || mjesec == 11) prviDanUMjesecu--;
+		if (mjesec == 2) prviDanUMjesecu -= 3;
+		if (mjesec == 0) prviDanUMjesecu = 1;
 		var listaKalendar = document.createElement("ul");
 		listaKalendar.className = "dani";
 
 		// kreirani i ubaceni prazni dani
-		for (var i = 0; i < firstDay; i++) {
+		for (var i = 0; i < prviDanUMjesecu; i++) {
 			var prazanDan = document.createElement("li");
 			prazanDan.className = "prazanDan";
 			listaKalendar.append(prazanDan);
@@ -313,7 +312,7 @@ let Kalendar = (function() {
 
         var brojacka = 1;
 		// ubacivanje pravih dana
-		for (var i = 0; i < daysInMonth; i++) {
+		for (var i = 0; i < brojDana; i++) {
 			var praviDan = document.createElement("li");
 			var unutrasnjiDiv = document.createElement("div");
 			unutrasnjiDiv.className = "slobodna";
@@ -324,7 +323,7 @@ let Kalendar = (function() {
         }
         
         // ubacivanje praznih dana na kraju zbog popunjavanja (ne mora)
-        for(var i = daysInMonth; i < MAX_BROJ_DANA; i++) {
+        for(var i = brojDana; i < MAX_BROJ_DANA; i++) {
             var pomocniDani = document.createElement("li");
             pomocniDani.className = "prazanDan";
             listaKalendar.append(pomocniDani);
