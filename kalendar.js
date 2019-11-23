@@ -116,12 +116,10 @@ function crtaj(mjesec) {
 function sljedeci() {
 	pomocnaMjesec++;
 	if (pomocnaMjesec < 12) {
-
 		document.getElementsByClassName("dugmeSljedeci").disabled = false;
-		let today = new Date();
-		let pozicija = today.getMonth();
+		let sada = new Date();
+		let pozicija = sada.getMonth();
 		crtaj(pomocnaMjesec);
-
 	}
 	else {
 		pomocnaMjesec = 11;
@@ -133,7 +131,7 @@ function prethodni() {
 	pomocnaMjesec--;
 	if (pomocnaMjesec >= 0) {
 		document.getElementsByClassName("dugmePrethodni").disabled = false;
-		let today = new Date();
+		let sada = new Date();
 		crtaj(pomocnaMjesec);
 	}
 	else {
@@ -150,6 +148,8 @@ function ucitajKalendar() {
 	crtaj(10);
 }
 
+// validacije 
+
 function validirajVrijeme(pocetak, kraj) {
 	var satiPocetak = pocetak.split(":")[0];
 	var satiKraj = kraj.split(":")[0];
@@ -164,7 +164,7 @@ function jeLiValidnaPeriodicna(dan, pocetak, kraj) {
 	return validirajVrijeme(pocetak, kraj);
 }
 
-function jeLiValidnaNeperiodicna(datum, pocetak, kraj) {
+function jeLiValidnaVanredna(datum, pocetak, kraj) {
 	let temp = datum.split(".");
 	let danSale = temp[0];
 	let mjesecSale = temp[1];
@@ -243,9 +243,10 @@ let Kalendar = (function() {
 						}
 				}
 			}
-
+			// vanredne
 			for (let i = 0; i < vsLista.length; i++) {
-				if (jeLiValidnaNeperiodicna(vsLista[i].datum, vsLista[i].pocetak, vsLista[i].kraj) == 1 && jeLiZauzetaUPeriodu(pocetak, kraj, vsLista[i].pocetak, vsLista[i].kraj) == 1) {
+				// neperiodnicne
+				if (jeLiValidnaVanredna(vsLista[i].datum, vsLista[i].pocetak, vsLista[i].kraj) == 1 && jeLiZauzetaUPeriodu(pocetak, kraj, vsLista[i].pocetak, vsLista[i].kraj) == 1) {
 						if (vsLista[i].naziv == poslanaSala) {
 							let datumSale = vsLista[i].datum;
 							let temp = datumSale.split(".");
@@ -269,9 +270,9 @@ let Kalendar = (function() {
 	}
 
 	function iscrtajKalendarImpl(kalendarRef, mjesec) {
-		var today = new Date();
+		var sada = new Date();
 		var listaDana = ["PON", "UTO", "SRI", "CET", "PET", "SUB", "NED"];
-		var trenutnaGodina = today.getFullYear();
+		var trenutnaGodina = sada.getFullYear();
 		var prviDanUMjesecu = (new Date(trenutnaGodina + "-" + mjesec + "-01")).getDay() + 2;
 		var brojDana = parseInt(TRAJANJA_MJESECI_U_DANIMA.get(mjesec));
 
