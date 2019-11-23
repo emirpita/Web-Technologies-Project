@@ -38,80 +38,69 @@ const NAZIVI_MJESECA = ["Januar", "Februar", "Mart", "April", "Maj", "Juni", "Ju
 // pomocne varijable
 var pomocnaMjesec = 10;
 
-// pocetni podaci
-var ps1 = {
+// pocetni podaci i testni podaci
+
+var psLista = [{
 	dan: 5,
 	semestar: "zimski",
 	pocetak: "09:00",
 	kraj: "10:00",
 	naziv: "MA",
 	predavac: "nastavnik1"
-}; //neispravan podatak
-var ps2 = {
+}, {
 	dan: 0,
 	semestar: "zimski",
 	pocetak: "10:00",
-	kraj: "13:00",
+	kraj: "12:00",
 	naziv: "MA",
 	predavac: "nastavnik1"
-};
-
-var ps3 = {
+}, {
 	dan: 5,
 	semestar: "ljetni",
 	pocetak: "12:00",
-	kraj: "13:00",
+	kraj: "14:00",
 	naziv: "1-02",
 	predavac: "nastavnik2"
-};
-var ps4 = {
+}, {
 	dan: 3,
 	semestar: "ljetni",
 	pocetak: "12:00",
-	kraj: "13:00",
+	kraj: "14:00",
 	naziv: "VA1",
 	predavac: "nastavnik2"
-};
+}];
 
-var psLista = [ps1, ps2, ps3, ps4];
-
-var vs1 = {
+var vsLista = [{
 	datum: "1.10.2019",
 	pocetak: "10:10",
 	kraj: "12:00",
 	naziv: "MA",
 	predavac: "nastavnik3"
-};
-var vs2 = {
+}, {
 	datum: "31.11.2019",
-	pocetak: "13:00",
-	kraj: "17:00",
+	pocetak: "12:00",
+	kraj: "16:00",
 	naziv: "MA",
 	predavac: "nastavnik3"
-}; //neispravan podatak
-var vs3 = {
+}, {
 	datum: "14.10.2019",
-	pocetak: "13:00",
-	kraj: "17:00",
+	pocetak: "12:00",
+	kraj: "16:00",
 	naziv: "MA",
 	predavac: "nastavnik4"
-};
-var vs4 = {
+}, {
 	datum: "09.01.2019",
-	pocetak: "13:00",
-	kraj: "17:00",
+	pocetak: "12:00",
+	kraj: "16:00",
 	naziv: "VA2",
 	predavac: "nastavnik5"
-};
-var vs5 = {
+}, {
 	datum: "09.11.2019",
-	pocetak: "13:00",
-	kraj: "17:00",
+	pocetak: "12:00",
+	kraj: "16:00",
 	naziv: "0-01",
 	predavac: "nastavnik4"
-};
-
-var vsLista = [vs1, vs2, vs3, vs4, vs5];
+}];
 
 // pomocne funkcije globalnog opsega
 
@@ -177,9 +166,9 @@ function jeLiValidnaPeriodicna(dan, pocetak, kraj) {
 }
 
 function jeLiValidnaNeperiodicna(datum, pocetak, kraj) {
-	let pom1 = datum.split(".");
-	let danSale = pom1[0];
-	let mjesecSale = pom1[1];
+	let temp = datum.split(".");
+	let danSale = temp[0];
+	let mjesecSale = temp[1];
 	// godina nam ne treba
 	mjesecSale = parseInt(mjesecSale);
 	mjesecSale--;
@@ -192,15 +181,9 @@ function jeLiValidnaNeperiodicna(datum, pocetak, kraj) {
 
 function getPocetniDan(pocetakMjesec, dan) {
 	let pocBoja = dan;
-	if (pocetakMjesec == 6 && dan != 6) {
-		pocBoja = pocBoja + 1;
-	}
-	else if (pocetakMjesec > dan) {
-		pocBoja = dan + pocetakMjesec - 1;
-	}
-	else if (dan > pocetakMjesec) {
-		pocBoja = dan - pocetakMjesec;
-	}
+	if (pocetakMjesec == 6 && dan != 6) pocBoja = pocBoja + 1;
+	else if (pocetakMjesec > dan) pocBoja = dan + pocetakMjesec - 1;
+	else if (dan > pocetakMjesec) pocBoja = dan - pocetakMjesec;
 	else if (dan == pocetakMjesec) {
 		pocBoja = 0;
 		if (pocetakMjesec - 7 > 0) pocetakMjesec -= 7;
@@ -209,9 +192,7 @@ function getPocetniDan(pocetakMjesec, dan) {
 		pocBoja--;
 		pocBoja += 7;
 	}
-	if (pocetakMjesec == 0) {
-		pocBoja = dan;
-	}
+	if (pocetakMjesec == 0) pocBoja = dan;
 	if (pomocnaMjesec == 5) pocBoja -= 2;
 	if (pomocnaMjesec == 5 && (dan == 5 || dan == 6)) pocBoja += 2;
 	if (pomocnaMjesec == 4 && (dan == 0 || dan == 1)) pocBoja += 4;
@@ -220,13 +201,10 @@ function getPocetniDan(pocetakMjesec, dan) {
 
 function jeLiZauzetaUPeriodu(pocetak, kraj, salaPocetak, salaKraj) {
 	let zauzeta = 0;
-	if (pocetak > salaPocetak && pocetak < salaKraj)
-		zauzeta = 1;
-	else if (pocetak < salaPocetak && kraj > salaPocetak)
-		zauzeta = 1;
-	else if (pocetak == salaPocetak || kraj == salaKraj)
-		zauzeta = 1;
-	return zauzeta;
+	if (pocetak > salaPocetak && pocetak < salaKraj) return 1;
+	else if (pocetak < salaPocetak && kraj > salaPocetak) return 1;
+	else if (pocetak == salaPocetak || kraj == salaKraj) return 1;
+	return 0;
 }
 
 let Kalendar = (function() {
@@ -234,16 +212,15 @@ let Kalendar = (function() {
 	function obojiZauzecaImpl(kalendarRef, mjesec, sala, pocetak, kraj) {
 
 		let pocetniDan = POCETNI_DANI.get(mjesec);
-		let salaIzRezervacije = sala;
+		let poslanaSala = sala;
 		if (pocetak != 0 && kraj != 0) {
 			// pretrazujemo prvo periodicne
 			for (let i = 0; i < psLista.length; i++) {
 				// validacija periodicnih
-				if (jeLiValidnaPeriodicna(psLista[i].dan, psLista[i].pocetak, psLista[i].kraj) == 1) {
-					if (jeLiZauzetaUPeriodu(pocetak, kraj, psLista[i].pocetak, psLista[i].kraj)== 1) {
+				if (jeLiValidnaPeriodicna(psLista[i].dan, psLista[i].pocetak, psLista[i].kraj) == 1 && jeLiZauzetaUPeriodu(pocetak, kraj, psLista[i].pocetak, psLista[i].kraj)== 1) {
 						let pocBoja = getPocetniDan(pocetniDan, psLista[i].dan);
 						if (psLista[i].semestar == "zimski") {
-							if (psLista[i].naziv == salaIzRezervacije) {
+							if (psLista[i].naziv == poslanaSala) {
 								for (let j = 0; j < ZIMSKI_SEMESTAR.length; j++) {
 									if (NAZIVI_MJESECA[mjesec] == ZIMSKI_SEMESTAR[j]) {
 										let kucicaDan = document.getElementsByClassName("slobodna");
@@ -265,21 +242,18 @@ let Kalendar = (function() {
 								}
 							}
 						}
-					}
 				}
 			}
 
 			for (let i = 0; i < vsLista.length; i++) {
-				if (jeLiValidnaNeperiodicna(vsLista[i].datum, vsLista[i].pocetak, vsLista[i].kraj) == 1) {
-					if (jeLiZauzetaUPeriodu(pocetak, kraj, vsLista[i].pocetak, vsLista[i].kraj) == 1) {
-						if (vsLista[i].naziv == salaIzRezervacije) {
+				if (jeLiValidnaNeperiodicna(vsLista[i].datum, vsLista[i].pocetak, vsLista[i].kraj) == 1 && jeLiZauzetaUPeriodu(pocetak, kraj, vsLista[i].pocetak, vsLista[i].kraj) == 1) {
+						if (vsLista[i].naziv == poslanaSala) {
 							let datumSale = vsLista[i].datum;
-							let pom1 = datumSale.split(".");
-							let danSale = pom1[0];
+							let temp = datumSale.split(".");
+							let danSale = temp[0];
 							danSale--;
-							let mjesecSale = pom1[1];
+							let mjesecSale = temp[1];
 							mjesecSale--;
-
 							if (pomocnaMjesec == mjesecSale) {
 								let kucicaDan = document.getElementsByClassName("slobodna");
 								kucicaDan[danSale].className = "zauzeta";
@@ -289,7 +263,6 @@ let Kalendar = (function() {
 				}
 			}
 		}
-	}
 
 	function ucitajPodatkeImpl(periodicna, redovna) {
 		psLista = periodicna.slice();
