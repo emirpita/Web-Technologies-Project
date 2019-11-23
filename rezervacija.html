@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="rezervacija.css" type="text/css" media="all">
     <meta charset='utf-8'>
 </HEAD>
-<BODY> 
+<BODY onload="ucitajKalendar()"> 
     <div class="meni">
         <div class = "logo">
              <img src="logo.jpg" alt="slika">
@@ -21,7 +21,7 @@
     <div class="sadrzaj">
         <br>
         <label for="sale">Odaberite salu:</label>
-        <select name="sale">
+        <select name="sale" class="sale">
             <option value="0-01">0-01</option>
             <option value="0-02">0-02</option>
             <option value="0-03">0-03</option>
@@ -37,70 +37,17 @@
         <label for="periodicna">Periodična rezervacija:</label>
         <input type="checkbox" name="periodicna"> <br>
         <label for="pocetak">Početak:</label>
-        <input type="time" name="pocetak"> <br>
+        <input type="time" name="pocetak" id="pocetak" onchange="refreshKalendar()"> <br>
         <label for="kraj">Kraj:</label>
-        <input type="time" name="kraj"> <br> <br>
+        <input type="time" name="kraj" id="kraj" onchange="refreshKalendar()"> <br> <br>
 
         <div class="kalendar">
-            <div class="month">      
-                <ul>
-                  <li id="trenutniMjesec">Novembar</li>
-                </ul>
-             </div>
-              
-              <ul class="naziviDana">
-                <li>PON</li>
-                <li>UTO</li>
-                <li>SRI</li>
-                <li>ČET</li>
-                <li>PET</li>
-                <li>SUB</li>
-                <li>NED</li>
-              </ul>
-              
-              <ul class="dani">
-                <li class="prazanDan"></li>
-                <li class="prazanDan"></li>
-                <li class="prazanDan"></li>
-                <li class="prazanDan"></li>
-                <li>1<div class="slobodna"></div></li>
-                <li>2<div class="slobodna"></div></li>
-                <li>3<div class="slobodna"></div></li>
-                <li>4<div class="slobodna"></div></li>
-                <li>5<div class="slobodna"></div></li>
-                <li>6<div class="slobodna"></div></li>
-                <li>7<div class="slobodna"></div></li>
-                <li>8<div class="slobodna"></div></li>
-                <li>9<div class="slobodna"></div></li>
-                <li>10<div class="zauzeta"></div></li>
-                <li>11<div class="slobodna"></div></li>
-                <li>12<div class="slobodna"></div></li>
-                <li>13<div class="zauzeta"></div></li>
-                <li>14<div class="slobodna"></div></li>
-                <li>15<div class="slobodna"></div></li>
-                <li>16<div class="slobodna"></div></li>
-                <li>17<div class="slobodna"></div></li>
-                <li>18<div class="slobodna"></div></li>
-                <li>19<div class="zauzeta"></div></li>
-                <li>20<div class="slobodna"></div></li>
-                <li>21<div class="slobodna"></div></li>
-                <li>22<div class="slobodna"></div></li>
-                <li>23<div class="slobodna"></div></li>
-                <li>24<div class="slobodna"></div></li>
-                <li>25<div class="zauzeta"></div></li>
-                <li>26<div class="slobodna"></div></li>
-                <li>27<div class="slobodna"></div></li>
-                <li>28<div class="slobodna"></div></li>
-                <li>29<div class="slobodna"></div></li>
-                <li>30<div class="slobodna"></div></li>
-                <li class="prazanDan"></li>
-                <li class="prazanDan"></li>
-            </ul>
         </div>
         <br>
-        <button class="dugmePrethodni">Prethodni</button>
-        <button class="dugmeSljedeci">Sljedeći</button>
+        <button class="dugmePrethodni" onclick="prethodni()">Prethodni</button>
+        <button class="dugmeSljedeci" onclick="sljedeci()">Sljedeći</button>
         <br> <br>
+        <SCRIPT src="kalendar.js"></SCRIPT>
     </div>
 </BODY>
 </HTML>
