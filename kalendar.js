@@ -104,6 +104,8 @@ var vsLista = [{
 }];
 */
 
+var psLista, vsLista;
+
 // pomocne funkcije globalnog opsega
 
 function crtaj(mjesec) {
@@ -332,6 +334,13 @@ let Kalendar = (function() {
             listaKalendar.append(pomocniDani);
 		}
 		kalendarRef.append(listaKalendar);
+
+		// dodavanje eventlistenera na dane
+		document.querySelectorAll(".dani li")
+		.forEach(d => d.addEventListener("click", function() {
+			let dan = d.innerHTML;
+			// zavrsiti sutra, provjeriti radi li idejno rjesenje
+		}));
 	}
 	return {
 		obojiZauzeca: obojiZauzecaImpl,

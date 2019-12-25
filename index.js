@@ -7,7 +7,10 @@ const url = require('url');
 
 const app = express();
 
+// sve sto ce mi trebati
 app.use(express.static('public'));
+app.use(express.json()) // for parsing application/json
+app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 
 app.get("/rezervacija.html", function (req, res) {
 	res.sendFile(__dirname + "/rezervacija.html");
@@ -43,6 +46,12 @@ app.get("/rezervacija.js", function (req, res) {
 
 app.get("/kalendar.js", function (req, res) {
     res.sendFile(__dirname + "/kalendar.js");
+});
+
+// dovrsiti ovo
+app.post("/rezervacija.html", function(req, res) {
+    // parsira request, ucita zauzeca.json u liste, provjeri je li objekat iz requesta u njima
+    // ako jeste, vrati u responsu tekst, ako nije appendfile nekako
 });
 
 /*app.get("/index.js", function (req, res) {
