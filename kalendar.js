@@ -40,6 +40,7 @@ var pomocnaMjesec = 10;
 
 // pocetni podaci i testni podaci
 
+/*
 var psLista = [{
 	dan: 5,
 	semestar: "zimski",
@@ -101,6 +102,7 @@ var vsLista = [{
 	naziv: "0-01",
 	predavac: "nastavnik4"
 }];
+*/
 
 // pomocne funkcije globalnog opsega
 
