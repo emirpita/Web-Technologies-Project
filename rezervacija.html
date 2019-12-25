@@ -20,26 +20,28 @@
     </div>
     <div class="sadrzaj">
         <br>
-        <label for="sale">Odaberite salu:</label>
-        <select name="sale" class="sale">
-            <option value="0-01">0-01</option>
-            <option value="0-02">0-02</option>
-            <option value="0-03">0-03</option>
-            <option value="0-04">0-04</option>
-            <option value="VA1">VA1</option>
-            <option value="VA2">VA2</option>
-            <option value="MA">MA</option>
-            <option value="EE1">EE1</option>
-            <option value="EE2">EE2</option>
-            <option value="S0">S0</option>
-            <!-- Dodati jos opcija, moguce koristiti i <form> HTML5-->
-        </select> <br>
-        <label for="periodicna">Periodična rezervacija:</label>
-        <input type="checkbox" name="periodicna"> <br>
-        <label for="pocetak">Početak:</label>
-        <input type="time" name="pocetak" id="pocetak" onchange="refreshKalendar()"> <br>
-        <label for="kraj">Kraj:</label>
-        <input type="time" name="kraj" id="kraj" onchange="refreshKalendar()"> <br> <br>
+        <form action="http://localhost:8080/rezervacija.html" method="POST">
+            <label for="sale">Odaberite salu:</label>
+            <select name="sale" class="sale">
+                <option value="0-01">0-01</option>
+                <option value="0-02">0-02</option>
+                <option value="0-03">0-03</option>
+                <option value="0-04">0-04</option>
+                <option value="VA1">VA1</option>
+                <option value="VA2">VA2</option>
+                <option value="MA">MA</option>
+                <option value="EE1">EE1</option>
+                <option value="EE2">EE2</option>
+                <option value="S0">S0</option>
+                <!-- Dodati jos opcija, moguce koristiti i <form> HTML5-->
+            </select> <br>
+            <label for="periodicna">Periodična rezervacija:</label>
+            <input type="checkbox" name="periodicna"> <br>
+            <label for="pocetak">Početak:</label>
+            <input type="time" name="pocetak" id="pocetak" onchange="refreshKalendar()"> <br>
+            <label for="kraj">Kraj:</label>
+            <input type="time" name="kraj" id="kraj" onchange="refreshKalendar()"> <br> <br>
+        </form>
 
         <div class="kalendar">
         </div>
