@@ -36,7 +36,7 @@ const ZIMSKI_SEMESTAR = ["Januar", "Oktobar", "Novembar", "Decembar"];
 const NAZIVI_MJESECA = ["Januar", "Februar", "Mart", "April", "Maj", "Juni", "Juli", "August", "Septembar", "Oktobar", "Novembar", "Decembar"];
 
 // pomocne varijable
-var pomocnaMjesec = 10;
+var pomocnaMjesec = 11; //parseInt(Date.today().getMonth());
 
 // pocetni podaci i testni podaci
 
@@ -338,8 +338,28 @@ let Kalendar = (function() {
 		// dodavanje eventlistenera na dane
 		document.querySelectorAll(".dani li")
 		.forEach(d => d.addEventListener("click", function() {
-			let dan = d.innerHTML;
-			// zavrsiti sutra, provjeriti radi li idejno rjesenje
+			if(confirm("Želite li rezervisati ovaj termin?")) {
+				let dan = d.innerHTML;
+				let mjesec = pomocnaMjesec + 1;
+				let nazivSale = document.getElementByClassName("sale")[0].selectedIndex.value;
+				let periodicna = document.getElementById("periodicna").value;
+				/*var value = e.options[e.selectedIndex].value;
+				var text = e.options[e.selectedIndex].text;*/
+				let pocetak = document.getElementById("pocetak").value;
+				let kraj = document.getElementById("kraj").value;
+				let datum = dan + "." + mjesec + ".2019"; // moze i sa Date objektom za godinu
+				let sala = {
+					datum:datum,
+					pocetak:pocetak,
+					kraj:kraj,
+					naziv:nazivSale,
+					predavac:"predavac", // nebitno
+					// dodatno
+					periodicna:periodicna,
+				 };
+				 console.log(sala);
+				Pozivi.posaljiSaluNaServer(sala);
+			}
 		}));
 	}
 	return {

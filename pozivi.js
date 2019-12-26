@@ -31,11 +31,20 @@ let Pozivi = (function () {
         ajax.onreadystatechange = function () {
 	        if (ajax.readyState == 4 && ajax.status == 200) {
             // kada je obradjen, izvrsava se ovo
+            // server salje nova zauzeca.json
             let jsonText = JSON.parse(ajax.responseText);
-            Kalendar.ucitajPodatke(jsonText.periodicna, jsonText.vanredna);
+            if(jsonText.valid == true) {
+                Kalendar.ucitajPodatke(jsonText.periodicna, jsonText.vanredna);
+                Kalendar.ucitajKalendar();
+            } else {
+                // prvo pretvorimo datum u novi format
+                let pomocnaLista = salaZaPoslati.split(".");
+                let datumNovi = pomocnaLista[0] + "/" + pomocnaLista[1] +"/" + pomocnaLista[2];
+                alert("Nije moguce rezervisati salu " + salaZaPoslati.naziv + " za navedeni datum " + datumNovi + " i termin od " + pocetak + " do " + kraj + " !");
+            }
 	    }
     }
-}
+    }
 
     return {
         ucitajPodatke : ucitajPodatke,
