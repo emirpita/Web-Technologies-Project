@@ -8,7 +8,7 @@ const url = require('url');
 const app = express();
 
 // sve sto ce mi trebati
-app.use(express.static('public'));
+app.use(express.static(__dirname));
 app.use(express.json()) // for parsing application/json
 app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 
