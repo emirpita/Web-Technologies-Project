@@ -149,7 +149,7 @@ function refreshKalendar() {
 }
 
 function ucitajKalendar() {
-	crtaj(10);
+	crtaj(11);
 }
 
 // validacije 
@@ -339,10 +339,12 @@ let Kalendar = (function() {
 		document.querySelectorAll(".dani li")
 		.forEach(d => d.addEventListener("click", function() {
 			if(confirm("Želite li rezervisati ovaj termin?")) {
-				let dan = d.innerHTML;
+				let dan = parseInt(d.innerHTML);
+				console.log(dan);
 				let mjesec = pomocnaMjesec + 1;
-				let nazivSale = document.getElementByClassName("sale")[0].selectedIndex.value;
-				let periodicna = document.getElementById("periodicna").value;
+				let nazivSaleLista = document.getElementsByClassName("sale");
+				let nazivSale = nazivSaleLista[0].selectedIndex.value;
+				let periodicna = document.getElementById("periodicna").checked;
 				/*var value = e.options[e.selectedIndex].value;
 				var text = e.options[e.selectedIndex].text;*/
 				let pocetak = document.getElementById("pocetak").value;

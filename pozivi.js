@@ -20,19 +20,20 @@ let Pozivi = (function () {
 
     // dodati klijentsku validaciju, ne mora, ali eto (na serveru se validira)
     function posaljiSaluNaServer(salaZaPoslati) {
-        var ajax = new XMLHttpRequest();
+        
+        var zahtjev = new XMLHttpRequest();
 
-        ajax.open("POST", "http://localhost:8080/rezervacija.html", true);
-        ajax.setRequestHeader("Content-type", "application/json");
-        ajax.send(JSON.stringify(salaZaPoslati));
+        zahtjev.open("POST", "http://localhost:8080/rezervacija.html", true);
+        zahtjev.setRequestHeader("Content-type", "application/json");
+        zahtjev.send(JSON.stringify(salaZaPoslati));
 
         // poslan zahtjev
 
-        ajax.onreadystatechange = function () {
-	        if (ajax.readyState == 4 && ajax.status == 200) {
+        zahtjev.onreadystatechange = function () {
+	        if (zahtjev.readyState == 4 && zahtjev.status == 200) {
             // kada je obradjen, izvrsava se ovo
             // server salje nova zauzeca.json
-            let jsonText = JSON.parse(ajax.responseText);
+            let jsonText = JSON.parse(zahtjev.responseText);
             if(jsonText.valid == true) {
                 Kalendar.ucitajPodatke(jsonText.periodicna, jsonText.vanredna);
                 Kalendar.ucitajKalendar();
