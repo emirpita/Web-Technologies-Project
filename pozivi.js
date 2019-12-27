@@ -36,7 +36,7 @@ let Pozivi = (function () {
             let jsonText = JSON.parse(zahtjev.responseText);
             if(jsonText.valid == true) {
                 Kalendar.ucitajPodatke(jsonText.periodicna, jsonText.vanredna);
-                Kalendar.ucitajKalendar();
+                Kalendar.refreshKalendar();
             } else {
                 // prvo pretvorimo datum u novi format
                 let pomocnaLista = salaZaPoslati.split(".");
