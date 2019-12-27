@@ -104,7 +104,8 @@ var vsLista = [{
 }];
 */
 
-var psLista, vsLista;
+var psLista = new Array();
+var vsLista = new Array();
 
 // pomocne funkcije globalnog opsega
 
@@ -342,8 +343,7 @@ let Kalendar = (function() {
 				let dan = parseInt(d.innerHTML);
 				console.log(dan);
 				let mjesec = pomocnaMjesec + 1;
-				let nazivSaleLista = document.getElementsByClassName("sale");
-				let nazivSale = nazivSaleLista[0].selectedIndex.value;
+				let nazivSale = document.getElementsByClassName("sale")[0].value;
 				let periodicna = document.getElementById("periodicna").checked;
 				/*var value = e.options[e.selectedIndex].value;
 				var text = e.options[e.selectedIndex].text;*/
