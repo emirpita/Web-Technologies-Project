@@ -47,6 +47,10 @@ app.get("/rezervacija.js", function(req, res) {
 	res.sendFile(__dirname + "/rezervacija.js");
 });
 
+app.get("/pocetna.js", function(req, res) {
+	res.sendFile(__dirname + "/pocetna.js");
+});
+
 app.get("/kalendar.js", function(req, res) {
 	res.sendFile(__dirname + "/kalendar.js");
 });

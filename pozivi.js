@@ -53,18 +53,19 @@ let Pozivi = (function() {
 		var ajax = new XMLHttpRequest();
 
 		ajax.open("GET", "http://localhost:8080/slike", true);
-		ajax.send();
-
-		ajax.onreadystatechange = function() {
-			if (ajax.readyState == 4 && ajax.status == 200) {
+		
+		ajax.onreadystatechange = function () {
+        if(ajax.readyState === 4) {
+            if(ajax.status === 200 || jsonFile.status == 0) {   
 				let jsonText = JSON.parse(ajax.responseText);
 				console.log(jsonText.slike);
 				cacheSlike(jsonText.slike);
-			}
-		}
+                }
+            }
+        }
+       ajax.send();
 	}
-
-
+	
 	return {
 		ucitajPodatke: ucitajPodatke,
 		posaljiSaluNaServer: posaljiSaluNaServer,

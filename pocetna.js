@@ -1,13 +1,15 @@
-var listaSlika; // ili ostaviti prazno ili staviti []
-var indeksDosadUcitanih = 0;
+let listaSlika; // ili ostaviti prazno ili staviti []
+let indeksDosadUcitanih = 0;
 
 // ucitava sve slike sa servera (kesira ih)
 function cacheSlike(slikeArg) {
-    listaSlika = new Array(slikeArg);
+    console.log("usao u ucitavanje");
+    listaSlika = Array.from(slikeArg);
+    console.log("ucitava");
 }
 
 function ucitajPocetnu() {
-    cacheSlike();
+    Pozivi.ucitajSlike();
     let duzina = listaSlika.length;
     let kontejner = document.getElementsByClassName("grid-container")[0];
     if(duzina>=3) {
