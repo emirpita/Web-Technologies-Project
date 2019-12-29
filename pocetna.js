@@ -29,8 +29,8 @@ function ubaciSlike(listaSlikaArg) {
         document.getElementById("dugmePrethodni").disabled = false;
     }
     // granicni slucaj 1
-    if((duzina - indeksDosadUcitanih - 1)>=BROJ_SLIKA_PO_STRANICI) {
-        for(i=indeksDosadUcitanih; i<(indeksDosadUcitanih + BROJ_SLIKA_PO_STRANICI); i++) {
+    if((duzina - indeksDosadUcitanih)>=BROJ_SLIKA_PO_STRANICI) {
+        for(i = indeksDosadUcitanih; i<(indeksDosadUcitanih + BROJ_SLIKA_PO_STRANICI); i++) {
             // slike su ucitane staticki
             let box = document.createElement("div");
             var slika = document.createElement('img'); 
@@ -42,7 +42,10 @@ function ubaciSlike(listaSlikaArg) {
         indeksDosadUcitanih = i;
         console.log("indeksDosadUcitanih " + indeksDosadUcitanih);
     } else {
-        for(i = indeksDosadUcitanih; i < (duzina-indeksDosadUcitanih+1); i++) {
+        console.log("usao ovdje");
+        i = indeksDosadUcitanih;
+        console.log("indeksDosadUcitanih: " + indeksDosadUcitanih + "\ni: " + i + "\nduzina: " + duzina + "\n(duzina-indeksDosadUcitanih+1) " +(duzina-indeksDosadUcitanih+1));
+        for(i = indeksDosadUcitanih; i < duzina; i++) {
             // slike su ucitane staticko
             let box = document.createElement("div");
             var slika = document.createElement('img'); 
