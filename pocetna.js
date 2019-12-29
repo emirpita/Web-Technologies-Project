@@ -39,9 +39,10 @@ function ubaciSlike(listaSlikaArg) {
             kontejner.appendChild(box);
             // ucitane prve tri slike
         }
-        indeksDosadUcitanih = i;
+        indeksDosadUcitanih += BROJ_SLIKA_PO_STRANICI;
         console.log("indeksDosadUcitanih " + indeksDosadUcitanih);
     } else {
+        // sad crtamo preostale slike
         console.log("usao ovdje");
         i = indeksDosadUcitanih;
         console.log("indeksDosadUcitanih: " + indeksDosadUcitanih + "\ni: " + i + "\nduzina: " + duzina + "\n(duzina-indeksDosadUcitanih+1) " +(duzina-indeksDosadUcitanih+1));
