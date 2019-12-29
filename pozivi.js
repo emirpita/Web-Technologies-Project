@@ -48,9 +48,26 @@ let Pozivi = (function() {
 		}
 	}
 
+	// zadatak 3
+	function ucitajSlike() {
+		var ajax = new XMLHttpRequest();
+
+		ajax.open("GET", "http://localhost:8080/slike", true);
+		ajax.send();
+
+		ajax.onreadystatechange = function() {
+			if (ajax.readyState == 4 && ajax.status == 200) {
+				let jsonText = JSON.parse(ajax.responseText);
+				console.log(jsonText.slike);
+				listaSlika = jsonText.slike;
+			}
+		}
+	}
+
 
 	return {
 		ucitajPodatke: ucitajPodatke,
-		posaljiSaluNaServer: posaljiSaluNaServer
+		posaljiSaluNaServer: posaljiSaluNaServer,
+		ucitajSlike: ucitajSlike
 	}
 }());

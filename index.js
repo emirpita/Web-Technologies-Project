@@ -195,6 +195,26 @@ app.post('/rezervacija.html', function(req, res) {
 		}
 
 	});
+
+	app.get("/slike", function(req, res) {
+		// lista stringova
+		let listaSlikaServer = [];
+		fs.readdir(__dirname, (err, files) => {
+			if (err) console.log('error', err);
+			files.forEach(file => {
+			  console.log(file);
+			  // podrzani formati su jpg, png i gif
+			  if(file.match("/.png$/") || file.match("/.jpg$/") || file.match("/.gif$/")) {
+				  listaSlikaServer.push(file);
+			  }
+			});
+		  });
+		console.log(listaSlikaServer);
+		res.contentType('application/json');
+		res.json(JSON.stringify({slike: listaSlikaServer}));
+
+	});
+
 });
 
 function jeLiZauzetaUPeriodu(pocetak, kraj, salaPocetak, salaKraj) {
