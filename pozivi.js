@@ -34,15 +34,11 @@ let Pozivi = (function () {
                }
                else 
                {
-                   alert('Nije moguće rezervisati salu ' + salaZaPoslati.naziv + ' za navedeni datum ' + datumZaDodavanjeDrugiFormat + ' i termin od ' +salaZaPoslati.pocetak+ ' do ' + salaZaPoslati.kraj +'!');
-                   let kalendar = document.getElementsByClassName("cal")[0];
-                   kalendar.innerHTML = "";
+                   alert("Nije moguće rezervisati salu " + salaZaPoslati.naziv + " za navedeni datum " + datumZaDodavanjeDrugiFormat + " i termin od " +salaZaPoslati.pocetak+ " do " + salaZaPoslati.kraj +"!");
+                   // mozda suvisno, ali radi
                    Pozivi.ucitajPodatke();
-                   Kalendar.iscrtajKalendar(kalendar, pomocnaMjesec);
-                   Kalendar.ucitajPodatke(listaPeriodicnihSala, listaVanrednihSala);
-                   Kalendar.obojiZauzeca(document.getElementsByClassName("cal"), pomocnaMjesec, document.getElementsByClassName("saleIzbor")[0].value, 
-                           document.getElementById("pocetak").value, document.getElementById("kraj").value);
-   
+                   refreshKalendar();
+                   // moze i ovo
                }
    
            }

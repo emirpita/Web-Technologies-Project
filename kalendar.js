@@ -104,8 +104,8 @@ var vsLista = [{
 }];
 */
 
-var psLista; //= new Array();
-var vsLista; // = new Array();
+var psLista = new Array();
+var vsLista = new Array();
 
 // pomocne funkcije globalnog opsega
 
@@ -259,6 +259,7 @@ let Kalendar = (function() {
 							danSale--;
 							let mjesecSale = temp[1];
 							mjesecSale--;
+							console.log("mjesec sale " + mjesecSale + " dan sale " + danSale);
 							if (pomocnaMjesec == mjesecSale) {
 								let kucicaDan = document.getElementsByClassName("slobodna");
 								kucicaDan[parseInt(danSale)].className = "zauzeta";
@@ -364,9 +365,92 @@ let Kalendar = (function() {
                 {
                     let sala = {"periodicnaRezervacija" : periodicnaRezervacija, "datum":datumZaDodavanje, 
                                 "pocetak":pocetakZaDodavanje, "kraj":krajZaDodavanje, "naziv":salaZaDodavanje, 
-                                "predavac":"predavac"};
-
-                    if (validacijaSaleKlijent(sala) == 0)
+								"predavac":"predavac"};
+					
+					let dodajSalu = false;
+					let datumLista = sala.datum.split(".");
+					let poslaniDanSale = parseInt(datumLista[0]);
+					mjesecSale = datumLista[1];
+					let kopijaMjesecSale = mjesecSale;
+					mjesecSale--;
+					mjesecSale = parseInt(mjesecSale);
+					kopijaMjesecSale = parseInt(kopijaMjesecSale);
+					godina = datumLista[2];
+						
+					let semestarRezervacije = "";
+					if(mjesecSale >=1 && mjesecSale <= 5) {
+						semestarRezervacije = "ljetni";
+					} else if(mjesecSale == 0 || (mjesecSale >= 9 && mjesecSale <= 11)) {
+						semestarRezervacije = "zimski";
+					}
+								
+					let noviDatum = kopijaMjesecSale + "." + poslaniDanSale + "." + godina;
+					let datumPomocna = new Date(noviDatum);
+					let danSale = datumPomocna.getDay();
+					if(danSale == 0) {
+						danSale = 6;
+					} else {
+						danSale--;
+					}
+					// danSale = dajDan(danSale);
+								
+					for (let i = 0; i < vsLista.length; i++) {
+					// provjeravamo je li u vanrednim
+						if (vsLista[i].naziv == sala.naziv && vsLista[i].datum == sala.datum && jeLiZauzetaUPeriodu(sala.pocetak, sala.kraj, vsLista[i].pocetak, vsLista[i].kraj) == 1) {
+							dodajSalu = true;
+							break;
+						}
+									
+						// provjeravamo vanredne rezervacije, ako se poklopi sa periodicnom posloanom
+						if (sala.periodicnaRezervacija == 1){
+							if (vsLista[i].naziv == sala.naziv){
+								let p1 = vsLista[i].datum.split(".");
+								let dan1 = p1[0];
+								let mjesec1 = p1[1];
+								mjesec1 = parseInt(mjesec1);
+								let godina1 = p1[2];
+								let novi1 = mjesec1 + "." + dan1 + "." + godina1;
+								let novi1Pom = new Date(novi1);
+								let dan2 = novi1Pom.getDay();
+								if(dan2 == 0) {
+									dan2 = 6;
+								} else {
+									dan2--;
+								}
+								// dan2 = dajDan(dan2);
+								
+								let semestarSaleIzListe = "";
+								if(mjesec1 >=2 && mjesec1 <= 6) {
+									semestarSaleIzListe = "ljetni";
+								} else if(mjesec1 == 1 || (mjesec1 >= 10 && mjesec1 <= 12)) {
+									semestarSaleIzListe = "zimski";
+								}
+						
+								if (jeLiZauzetaUPeriodu(sala.pocetak, sala.kraj, vsLista[i].pocetak, vsLista[i].kraj) == 1) {
+									if (dan2 == danSale && semestarRezervacije == semestarSaleIzListe) {
+										dodajSalu = true;
+										break;
+									} 
+								}
+							}
+						}
+					}
+						
+					// provjera je li periodicna i je li izlazi iz semestra
+						if (sala.periodicnaRezervacija == 1) {
+							if (semestarRezervacije == "") {
+							dodajSalu = true;
+						}    
+					}
+						
+					for (let j = 0; j < psLista.length; j++) {
+						//provjera naziva sala, poklapanje vremena i dana
+						if (psLista[j].naziv == sala.naziv && psLista[j].semestar == semestarRezervacije && jeLiZauzetaUPeriodu(sala.pocetak, sala.kraj, psLista[j].pocetak, psLista[j].kraj) == 1 && danSale == psLista[j].dan){
+							dodajSalu = true;
+							break;
+						}
+					}
+                    if (dodajSalu==true)
                     {
                         if (confirm("Da li želite da rezervisati ovaj termin?") == true) 
                         {
@@ -376,38 +460,12 @@ let Kalendar = (function() {
                     else
                     {
                         alert('Nije moguće rezervisati salu ' + sala.naziv + ' za navedeni datum ' + datumZaDodavanjeDrugiFormat + ' i termin od ' +sala.pocetak+ ' do ' + sala.kraj +'!');
-                        osvjeziKalendar();
+                        refreshKalendar();
                     }
                 }
             }
         }
     }));
-		/*document.querySelectorAll(".dani li")
-		.forEach(d => d.addEventListener("click", function() {
-			if(confirm("Želite li rezervisati ovaj termin?")) {
-				let dan = parseInt(d.innerHTML);
-				console.log(dan);
-				let mjesec = pomocnaMjesec + 1;
-				let nazivSale = document.getElementsByClassName("sale")[0].value;
-				let periodicna = document.getElementById("periodicna").checked;
-				var value = e.options[e.selectedIndex].value;
-				var text = e.options[e.selectedIndex].text;
-				let pocetak = document.getElementById("pocetak").value;
-				let kraj = document.getElementById("kraj").value;
-				let datum = dan + "." + mjesec + ".2019"; // moze i sa Date objektom za godinu
-				let sala = {
-					datum:datum,
-					pocetak:pocetak,
-					kraj:kraj,
-					naziv:nazivSale,
-					predavac:"predavac", // nebitno
-					// dodatno
-					periodicna:periodicna,
-				 };
-				 console.log(sala);
-				Pozivi.posaljiSaluNaServer(sala);
-			}
-		}));*/
 	}
 	return {
 		obojiZauzeca: obojiZauzecaImpl,
@@ -415,120 +473,3 @@ let Kalendar = (function() {
 		iscrtajKalendar: iscrtajKalendarImpl
 	}
 }());
-
-function validacijaSaleKlijent(salaKojuValidiramo)
-{  
-        let dodajSalu = false;
-        let pom1 = salaKojuValidiramo.datum.split(".");
-        let danSaleKojaSeDodaje = parseInt(pom1[0]);
-        mjesecSale = pom1[1];
-        let pom2Mjesec = mjesecSale;
-        mjesecSale--;
-        mjesecSale = parseInt(mjesecSale);
-        pom2Mjesec = parseInt(pom2Mjesec);
-        godina = pom1[2];
-
-        let semestarRezervacije = "";
-        if(mjesecSale >=1 && mjesecSale <= 5) {
-            semestarRezervacije = "ljetni";
-        } else if(mjesecSale == 0 || (mjesecSale >= 9 && mjesecSale <= 11)) {
-            semestarRezervacije = "zimski";
-        }
-        
-        let noviDatum = pom2Mjesec + "." + danSaleKojaSeDodaje + "." + godina;
-        let datumPomocna = new Date(noviDatum);
-        let danSale = datumPomocna.getDay();
-        danSale = dajDan(danSale);
-        
-        for (let i = 0; i < vsLista.length; i++)
-        {
-            //za validaciju vanredne i vanredne
-            if (vsLista[i].naziv == salaKojuValidiramo.naziv && vsLista[i].datum == salaKojuValidiramo.datum)
-            {
-                //koristim funkciju iz kalendara, ako se vrijeme ne poklapa dodamo 
-                if (jeLiZauzetaUPeriodu(salaKojuValidiramo.pocetak, salaKojuValidiramo.kraj, vsLista[i].pocetak, vsLista[i].kraj) == 1)
-                {
-                    dodajSalu = true;
-                    break;
-                    
-                }
-            }
-            
-            //prolazi kroz listu vanrednih i provjerava na koji su dan rezervisane
-            if (salaKojuValidiramo.periodicnaRezervacija == 1)
-            {
-                if (vsLista[i].naziv == salaKojuValidiramo.naziv)
-                {
-                    
-                    let p1 = vsLista[i].datum.split(".");
-                    let dan1 = p1[0];
-                    let mjesec1 = p1[1];
-                    mjesec1 = parseInt(mjesec1);
-                    let godina1 = p1[2];
-
-                    let novi1 = mjesec1 + "." + dan1 + "." + godina1;
-                    let novi1Pom = new Date(novi1);
-                    let dan2 = novi1Pom.getDay();
-                    dan2 = dajDan(dan2);
-        
-                    let semestarSaleIzListe = "";
-                    if(mjesec1 >=2 && mjesec1 <= 6) {
-                        semestarSaleIzListe = "ljetni";
-                    } else if(mjesec1 == 1 || (mjesec1 >= 10 && mjesec1 <= 12)) {
-                        semestarSaleIzListe = "zimski";
-                    }
-
-                    if (jeLiZauzetaUPeriodu(salaKojuValidiramo.pocetak, salaKojuValidiramo.kraj, vsLista[i].pocetak, vsLista[i].kraj) == 1)
-                    {
-                        if (dan2 == danSale && semestarRezervacije == semestarSaleIzListe)
-                        {
-                            dodajSalu = true;
-                            break;
-                        } 
-                    }
-                }
-            }
-        }
-
-        //Ako je periodicna i van semestara
-        if (salaKojuValidiramo.periodicnaRezervacija == 1)
-        {
-            if (semestarRezervacije == "")
-            {
-                dodajSalu = true;
-            }    
-        }
-
-    
-        for (let j = 0; j < psLista.length; j++)
-        {
-            //provjera naziva sala
-            if (psLista[j].naziv == salaKojuValidiramo.naziv && psLista[j].semestar == semestarRezervacije)
-            {
-                    //provjera da li se vrijeme poklapa
-                    if (jeLiZauzetaUPeriodu(salaKojuValidiramo.pocetak, salaKojuValidiramo.kraj, psLista[j].pocetak, psLista[j].kraj) == 1)
-                    {
-                        //provjera da li su na isti dan unutar sedmice
-                        if (danSale == psLista[j].dan)
-                        {
-                            dodajSalu = true;
-                            break;
-                        }
-                    }
-            }
-        }
-        if (dodajSalu == true) return 1;
-        return 0;
-}
-
-function dajDan(dan)
-{
-    if(dan == 0) 
-        {
-            dan = 6;
-        } else {
-            dan--;
-        }
-
-        return dan;
-}

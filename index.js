@@ -79,7 +79,12 @@ app.post('/rezervacija.html',function(req,res){
         let noviDatum = pom2Mjesec + "." + danSaleKojaSeDodaje + "." + godina;
         let datumPomocna = new Date(noviDatum);
         let danSale = datumPomocna.getDay();
-        danSale = dajDan(danSale);
+        if(danSale == 0) {
+            danSale = 6;
+        } else {
+            danSale--;
+        }
+        // danSale = dajDan(danSale);
         
         for (let i = 0; i < vanredne.length; i++)
         {
@@ -110,7 +115,12 @@ app.post('/rezervacija.html',function(req,res){
                     let novi1 = mjesec1 + "." + dan1 + "." + godina1;
                     let novi1Pom = new Date(novi1);
                     let dan2 = novi1Pom.getDay();
-                    dan2 = dajDan(dan2);
+                    if(dan2 == 0) {
+        				dan2 = 6;
+        			} else {
+            			dan2--;
+        			}
+                    // dan2 = dajDan(dan2);
 
                     let semestarSaleIzListe = "";
                     if(mjesec1 >=2 && mjesec1 <= 6) {
@@ -184,6 +194,8 @@ app.post('/rezervacija.html',function(req,res){
                 delete pomocnaSala["periodicnaRezervacija"];
                 jsonContent.vanredna.push(pomocnaSala);
             }
+
+            // upisujemo u fajl
             fs.writeFile("zauzeca.json", JSON.stringify(jsonContent),function(err, result) {
                 if(err) console.log('error', err);
                 jsonContent.valid = 1;
@@ -198,30 +210,6 @@ app.post('/rezervacija.html',function(req,res){
 
       }); 
  });
-
- /*function jeLiZauzetaUPeriodu(pocetak, kraj, salaPocetak, salaKraj)
-{
-    let zauzeta = 0;
-    if (pocetak > salaPocetak && pocetak < salaKraj) 
-         zauzeta = 1;
-    else if (pocetak < salaPocetak && kraj > salaPocetak)
-        zauzeta = 1;
-    else if (pocetak == salaPocetak || kraj == salaKraj)
-        zauzeta = 1;    
-    return zauzeta;    
-}*/
-
-function dajDan(dan)
-{
-    if(dan == 0) 
-        {
-            dan = 6;
-        } else {
-            dan--;
-        }
-
-        return dan;
-}
 
 function jeLiZauzetaUPeriodu(pocetak, kraj, salaPocetak, salaKraj) {
 	let zauzeta = 0;
