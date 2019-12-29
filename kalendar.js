@@ -227,9 +227,10 @@ let Kalendar = (function() {
 							if (psLista[i].naziv == poslanaSala) {
 								for (let j = 0; j < ZIMSKI_SEMESTAR.length; j++) {
 									if (NAZIVI_MJESECA[mjesec] == ZIMSKI_SEMESTAR[j]) {
-										let kucicaDan = document.getElementsByClassName("slobodna");
-										for (let k = pocBoja; k < kucicaDan.length; k += 6) {
-											kucicaDan[k].className="zauzeta";
+										let kucicaDan = document.getElementsByClassName("daniUKalendaru");
+										for (let k = pocBoja; k < kucicaDan.length; k += 7) {
+											// kucicaDan[k].className="zauzeta";
+											document.getElementsByClassName("daniUKalendaru")[k].lastChild.className = "zauzeta";
 										}
 
 									}
@@ -239,9 +240,10 @@ let Kalendar = (function() {
 						else if (psLista[i].semestar == "ljetni") {
 							for (let m = 0; m < LJETNI_SEMESTAR.length; m++) {
 								if (NAZIVI_MJESECA[mjesec] == LJETNI_SEMESTAR[m]) {
-									let kucicaDan = document.getElementsByClassName("slobodna");
+									let kucicaDan = document.getElementsByClassName("daniUKalendaru");
 									for (let v = pocBoja; v < kucicaDan.length; v += 7) {
-										kucicaDan[v].className = "zauzeta";
+										//kucicaDan[v].className = "zauzeta";
+										document.getElementsByClassName("daniUKalendaru")[v].lastChild.className = "zauzeta";
 									}
 								}
 							}
@@ -261,8 +263,9 @@ let Kalendar = (function() {
 							mjesecSale--;
 							console.log("mjesec sale " + mjesecSale + " dan sale " + danSale);
 							if (pomocnaMjesec == mjesecSale) {
-								let kucicaDan = document.getElementsByClassName("slobodna");
-								kucicaDan[parseInt(danSale)].className = "zauzeta";
+								//let kucicaDan = document.getElementsByClassName("slobodna");
+								//kucicaDan[parseInt(danSale)].className = "zauzeta";
+								document.getElementsByClassName("daniUKalendaru")[danSale].lastChild.className = "zauzeta";
 							}
 						}
 					}
@@ -323,6 +326,7 @@ let Kalendar = (function() {
 		// ubacivanje pravih dana
 		for (var i = 0; i < brojDana; i++) {
 			var praviDan = document.createElement("li");
+			praviDan.className = "daniUKalendaru";
 			var unutrasnjiDiv = document.createElement("div");
 			unutrasnjiDiv.className = "slobodna";
 			praviDan.innerHTML = brojacka;
@@ -452,15 +456,15 @@ let Kalendar = (function() {
 					}
                     if (dodajSalu==true)
                     {
-                        if (confirm("Da li želite da rezervisati ovaj termin?") == true) 
-                        {
-                            Pozivi.posaljiSaluNaServer(sala);
-                        }
+                        alert('Nije moguće rezervisati salu ' + sala.naziv + ' za navedeni datum ' + datumZaDodavanjeDrugiFormat + ' i termin od ' +sala.pocetak+ ' do ' + sala.kraj +'!');
+                        refreshKalendar();
                     }
                     else
                     {
-                        alert('Nije moguće rezervisati salu ' + sala.naziv + ' za navedeni datum ' + datumZaDodavanjeDrugiFormat + ' i termin od ' +sala.pocetak+ ' do ' + sala.kraj +'!');
-                        refreshKalendar();
+						if (confirm("Da li želite da rezervisati ovaj termin?") == true) 
+                        {
+                            Pozivi.posaljiSaluNaServer(sala);
+                        }
                     }
                 }
             }

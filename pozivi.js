@@ -13,10 +13,18 @@ let Pozivi = (function () {
         ajax.onreadystatechange = function () {
 	        if (ajax.readyState == 4 && ajax.status == 200) {
                 let jsonText = JSON.parse(ajax.responseText);
+                let kalendar = document.getElementsByClassName("kalendar")[0];
+                kalendar.innerHTML = "";
                 Kalendar.ucitajPodatke(jsonText.periodicna, jsonText.vanredna);
+                Kalendar.iscrtajKalendar(kalendar, pomocnaMjesec);
+                Kalendar.obojiZauzeca(document.getElementsByClassName("kalendar"), pomocnaMjesec, document.getElementsByClassName("sale")[0].value, 
+                                document.getElementById("pocetak").value, document.getElementById("kraj").value);
 	        }
         }
     }
+
+    // nova verzija funkcije ucitaj podatke
+    
 
     function posaljiSaluNaServer(salaZaPoslati)
     {
