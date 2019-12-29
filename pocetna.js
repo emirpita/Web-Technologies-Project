@@ -1,0 +1,7 @@
+function sljedeci() {
+    
+}
+
+function prethodni() {
+    
+}
