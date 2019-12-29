@@ -7,8 +7,9 @@ const url = require('url');
 
 const app = express();
 
-// lista konstanti
+// lista konstanti i pomocnih varijabli
 const TRENUTNA_GODINA = 2019;
+let listaFajlova = [], listaSlikaServer = [];
 
 // sve sto ce mi trebati
 app.use(express.static(__dirname));
@@ -221,41 +222,52 @@ app.get("/slike", function(req, res) {
 		console.log(files);
 		files.forEach(file => {
 			console.log(file);
+			console.log(file.includes(".png"));
 			  // podrzani formati su jpg, png i gif
-			  if(file.match("/.png$/") || file.match("/.jpg$/") || file.match("/.gif$/")) {
+			  if(file.includes(".png") || file.match(".jpg") || file.match(".gif")) {
+				  console.log("yes");
 				  listaSlikaServer.push(file);
 			  }
 		});
 		 res.contentType('application/json');
 		res.json({slike: listaSlikaServer});
 	});
-	/*let fajlovi = procitajFolder();
-	for(let i = 0; i < fajlovi.length; i++) {
-		if(fajlovi[i].match("/.png$/") || fajlovi[i].match("/.jpg$/") || fajlovi[i].match("/.gif$/")) {
-			listaSlikaServer.push(fajlovi[i]);
-		}
-	}
-	console.log("Lista slika: \n" + listaSlikaServer);
-	res.contentType('application/json');
-	res.json({slike: listaSlikaServer});*/
 });
 
+/*
+// zadatak 3, verzija 2, prvo citati fajlove, zatim ih spasiti, a zatim ih poslati
+
+// citanje fajlova
+
 function procitajFolder() {
-	let listaFajlova = [];
-	fs.readdir(__dirname, (err, files) => {
+	fs.readdir(__dirname, (err, files) => { // mozda Sync
 		console.log("procitao direktorij");
 		if (err) console.log('error', err);
 		console.log(files);
-		listaFajlova.push(files);
-		/*files.forEach(file => {
-		console.log(file);
-		  // podrzani formati su jpg, png i gif
-		  if(file.match("/.png$/") || file.match("/.jpg$/") || file.match("/.gif$/")) {
-			  listaSlikaServer.push(file);
-		  }
-		});*/
+		files.forEach(file => {
+			console.log(file);
+			listaFajlova.push(file);
+		});
 	});
-	return listaFajlova;
 }
+
+function izdvojiSlike() {
+	for(let i = 0; i < listaFajlova.length; i++) {
+		// podrzani formati su jpg, png i gif
+		if(listaFajlova[i].match("/.png$/") || listaFajlova[i].match("/.jpg$/") || listaFajlova[i].match("/.gif$/")) {
+			listaSlikaServer.push(listaFajlova[i]);
+		}
+	}
+}
+
+app.get("/slike", function(req, res) {
+	console.log("Dobio zahtjev");
+	// idemo redom
+	procitajFolder();
+	izdvojiSlike();
+	console.log("Lista slika: \n" + listaSlikaServer);
+	res.contentType('application/json');
+	res.json({slike: listaSlikaServer});
+});*/
 
 app.listen(8080);

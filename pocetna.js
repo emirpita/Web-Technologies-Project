@@ -8,6 +8,11 @@ function cacheSlike(slikeArg) {
     console.log("ucitava");
 }
 
+//ISPRAVNA SOLUCIJA
+function ajaxCaller () {
+    Pozivi.ucitajSlike();
+}
+
 function ucitajPocetnu(listaSlikaArg) {
     // Pozivi.ucitajSlike();
     let duzina = listaSlikaArg.length;
