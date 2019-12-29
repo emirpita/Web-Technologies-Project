@@ -196,25 +196,6 @@ app.post('/rezervacija.html', function(req, res) {
 
 	});
 
-	app.get("/slike", function(req, res) {
-		// lista stringova
-		let listaSlikaServer = [];
-		fs.readdir(__dirname, (err, files) => {
-			if (err) console.log('error', err);
-			files.forEach(file => {
-			  console.log(file);
-			  // podrzani formati su jpg, png i gif
-			  if(file.match("/.png$/") || file.match("/.jpg$/") || file.match("/.gif$/")) {
-				  listaSlikaServer.push(file);
-			  }
-			});
-		  });
-		console.log(listaSlikaServer);
-		res.contentType('application/json');
-		res.json(JSON.stringify({slike: listaSlikaServer}));
-
-	});
-
 });
 
 function jeLiZauzetaUPeriodu(pocetak, kraj, salaPocetak, salaKraj) {
@@ -224,5 +205,28 @@ function jeLiZauzetaUPeriodu(pocetak, kraj, salaPocetak, salaKraj) {
 	else if (pocetak == salaPocetak || kraj == salaKraj) return 1;
 	return 0;
 }
+
+// zadatak 3
+app.get("/slike", function(req, res) {
+	// lista stringova
+	console.log("Dobio zahtjev")
+	let listaSlikaServer = [];
+	fs.readdir(__dirname, (err, files) => {
+		console.log("procitao direktorij");
+		console.log(files);
+		if (err) console.log('error', err);
+		files.forEach(file => {
+		console.log(file);
+		  // podrzani formati su jpg, png i gif
+		  if(file.match("/.png$/") || file.match("/.jpg$/") || file.match("/.gif$/")) {
+			  listaSlikaServer.push(file);
+		  }
+		});
+	  });
+	//console.log(listaSlikaServer);
+	res.contentType('application/json');
+	res.json({slike: listaSlikaServer});
+	console.log("Lista slika: \n" + listaSlikaServer);
+});
 
 app.listen(8080);

@@ -59,7 +59,7 @@ let Pozivi = (function() {
 			if (ajax.readyState == 4 && ajax.status == 200) {
 				let jsonText = JSON.parse(ajax.responseText);
 				console.log(jsonText.slike);
-				listaSlika = jsonText.slike;
+				cacheSlike(jsonText.slike);
 			}
 		}
 	}

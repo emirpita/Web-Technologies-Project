@@ -1,9 +1,9 @@
-var listaSlika = []; // ili ostaviti prazno ili staviti []
+var listaSlika; // ili ostaviti prazno ili staviti []
 var indeksDosadUcitanih = 0;
 
 // ucitava sve slike sa servera (kesira ih)
-function cacheSlike() {
-    Pozivi.ucitajSlike();
+function cacheSlike(slikeArg) {
+    listaSlika = new Array(slikeArg);
 }
 
 function ucitajPocetnu() {
