@@ -1,6 +1,9 @@
 let listaSlika; // ili ostaviti prazno ili staviti []
 let indeksDosadUcitanih = 0;
 
+// konstante
+const BROJ_SLIKA_PO_STRANICI = 3;
+
 // ucitava sve slike sa servera (kesira ih)
 function cacheSlike(slikeArg) {
     console.log("usao u ucitavanje");
@@ -18,9 +21,15 @@ function ubaciSlike(listaSlikaArg) {
     listaSlika = listaSlikaArg;
     let duzina = listaSlikaArg.length;
     let kontejner = document.getElementsByClassName("grid-container")[0];
+    document.getElementsByClassName("grid-container")[0].innerHTML = "";
     let i = 0; // da bude vidljivo u funkciji
-    if(duzina>=3) {
-        for(i=indeksDosadUcitanih; i<(indeksDosadUcitanih + 3); i++) {
+    if(indeksDosadUcitanih==0) {
+        document.getElementById("dugmePrethodni").disabled = true;
+    } else {
+        document.getElementById("dugmePrethodni").disabled = false;
+    }
+    if((duzina - indeksDosadUcitanih)>=BROJ_SLIKA_PO_STRANICI) {
+        for(i=indeksDosadUcitanih; i<(indeksDosadUcitanih + BROJ_SLIKA_PO_STRANICI); i++) {
             // slike su ucitane staticki
             let box = document.createElement("div");
             var slika = document.createElement('img'); 
@@ -31,8 +40,8 @@ function ubaciSlike(listaSlikaArg) {
         }
         indeksDosadUcitanih = i;
     } else {
-        for(let i=0; i<duzina; i++) {
-            // slike su ucitane staticki
+        for(i=indeksDosadUcitanih; i<(duzina-indeksDosadUcitanih+1); i++) {
+            // slike su ucitane staticko
             let box = document.createElement("div");
             var slika = document.createElement('img'); 
             slika.src = "http://localhost:8080/" + listaSlikaArg[i]; 
@@ -40,6 +49,7 @@ function ubaciSlike(listaSlikaArg) {
             kontejner.appendChild(box);
             // ucitane prve tri slike
         }
+        //indeksDosadUcitanih = i;
         // ako dodje dovde, nema vise slika za ucitavanje
         // disable dugme sljedeci
         document.getElementById("dugmeSljedeci").disabled = true;
@@ -47,10 +57,40 @@ function ubaciSlike(listaSlikaArg) {
 }
 
 function next() {
-    document.getElementsByClassName("grid-container")[0].innerHTML = "";
+    // document.getElementsByClassName("grid-container")[0].innerHTML = "";
     ubaciSlike(listaSlika);
 }
 
 function previous() {
-
+    // slicno kao ubaci slike, samo sto indeks krece od najblizeg kraja i ide nazad
+    // provjeravamo dokle je indeks dosad ucitanih
+    let listaSlikaArg = listaSlika;
+    let duzina = listaSlikaArg.length;
+    let kontejner = document.getElementsByClassName("grid-container")[0];
+    document.getElementsByClassName("grid-container")[0].innerHTML = "";
+    let i = 0; // da bude vidljivo u funkciji
+    if(indeksDosadUcitanih==0) {
+        document.getElementById("dugmePrethodni").disabled = true;
+    } else {
+        document.getElementById("dugmePrethodni").disabled = false;
+        // crtanje 
+        // redom ucitavanje
+        for(i = (indeksDosadUcitanih - BROJ_SLIKA_PO_STRANICI); i < indeksDosadUcitanih; i++) {
+            // slike su ucitane staticki
+            let box = document.createElement("div");
+            var slika = document.createElement('img'); 
+            slika.src = "http://localhost:8080/" + listaSlikaArg[i]; 
+            box.appendChild(slika);   
+            kontejner.appendChild(box);
+        }
+        indeksDosadUcitanih -= BROJ_SLIKA_PO_STRANICI;
+    }
+    
+    // mozda ne treba
+    /*
+    if(indeksDosadUcitanih==0) {
+        document.getElementById("dugmePrethodni").disabled = true;
+    } else {
+        document.getElementById("dugmePrethodni").disabled = false;
+    }*/
 }
