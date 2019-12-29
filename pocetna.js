@@ -28,7 +28,8 @@ function ubaciSlike(listaSlikaArg) {
     } else {
         document.getElementById("dugmePrethodni").disabled = false;
     }
-    if((duzina - indeksDosadUcitanih)>=BROJ_SLIKA_PO_STRANICI) {
+    // granicni slucaj 1
+    if((duzina - indeksDosadUcitanih - 1)>=BROJ_SLIKA_PO_STRANICI) {
         for(i=indeksDosadUcitanih; i<(indeksDosadUcitanih + BROJ_SLIKA_PO_STRANICI); i++) {
             // slike su ucitane staticki
             let box = document.createElement("div");
@@ -39,8 +40,9 @@ function ubaciSlike(listaSlikaArg) {
             // ucitane prve tri slike
         }
         indeksDosadUcitanih = i;
+        console.log("indeksDosadUcitanih " + indeksDosadUcitanih);
     } else {
-        for(i=indeksDosadUcitanih; i<(duzina-indeksDosadUcitanih+1); i++) {
+        for(i = indeksDosadUcitanih; i < (duzina-indeksDosadUcitanih+1); i++) {
             // slike su ucitane staticko
             let box = document.createElement("div");
             var slika = document.createElement('img'); 
@@ -64,11 +66,19 @@ function next() {
 function previous() {
     // slicno kao ubaci slike, samo sto indeks krece od najblizeg kraja i ide nazad
     // provjeravamo dokle je indeks dosad ucitanih
+
     let listaSlikaArg = listaSlika;
     let duzina = listaSlikaArg.length;
     let kontejner = document.getElementsByClassName("grid-container")[0];
     document.getElementsByClassName("grid-container")[0].innerHTML = "";
     let i = 0; // da bude vidljivo u funkciji
+
+    // provjera je li dosao do kraja
+    if(indeksDosadUcitanih>0 && indeksDosadUcitanih<duzina) {
+        document.getElementById("dugmeSljedeci").disabled = false; // mislim ok
+    } 
+
+
     if(indeksDosadUcitanih==0) {
         document.getElementById("dugmePrethodni").disabled = true;
     } else {
@@ -84,13 +94,16 @@ function previous() {
             kontejner.appendChild(box);
         }
         indeksDosadUcitanih -= BROJ_SLIKA_PO_STRANICI;
+        console.log("indeksDosadUcitanih " + indeksDosadUcitanih);
     }
     
-    // mozda ne treba
-    /*
+    // TREBA
     if(indeksDosadUcitanih==0) {
         document.getElementById("dugmePrethodni").disabled = true;
+        document.getElementById("dugmeSljedeci").disabled = false; // mislim ok
+        indeksDosadUcitanih = BROJ_SLIKA_PO_STRANICI;
     } else {
         document.getElementById("dugmePrethodni").disabled = false;
-    }*/
+        //document.getElementById("dugmeSljedeci").disabled = true; // mislim ne treba
+    }
 }
