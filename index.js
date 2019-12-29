@@ -48,105 +48,180 @@ app.get("/kalendar.js", function (req, res) {
     res.sendFile(__dirname + "/kalendar.js");
 });
 
-// dovrsiti ovo
-app.post("/rezervacija.html", function(req, res) {
-    // parsira request, ucita zauzeca.json u liste, provjeri je li objekat iz requesta u njima
-    // ako jeste, vrati u responsu tekst, ako nije appendfile nekako
-    let salaObject = req.body + ""; // JSON.parse(JSON.stringify(req.body));
-    console.log(salaObject);
-    let parsiraniPodaci = new Array();
-    let p = new Array();
-    let v = new Array(); // periodicna, vanredna
-    // kontrolna varijabla za zauzetost
-    let zauzeta = false;
-    console.log("Primio zahtjev");
 
-    // ucitavamo liste zauzeca
-    fs.readFile('zauzeca.json', 'utf8', function(err, data) {
-        if (err) throw err;
-        parsiraniPodaci = JSON.parse(data);
-        p = parsiraniPodaci.periodicna;
-        v = parsiraniPodaci.vanredna;
-        console.log("Ucitao podatke");
-    });
-    // provjera poklapanja sa vanrednim, a zatim sa periodicnim
-    for(let i = 0; i < v.length; i++) {
-        if(salaObject.naziv == v[i].naziv && salaObject.datum == v[i].datum && jeLiZauzetaUPeriodu(salaObject.pocetak, salaObject.kraj, v[i].pocetak, v[i].kraj)) {
-            zauzeta = true;
-            console.log("Nasao u podacima");
-            break;
+app.post('/rezervacija.html',function(req,res){
+    let dodajSalu = false;
+    fs.readFile('zauzeca.json', 'utf8' , (greska, data) => {
+        if(greska) throw greska;
+        let podaci = data.toString('utf-8');
+        var contents = fs.readFileSync("zauzeca.json");
+        var jsonContent = JSON.parse(contents);
+        let periodicne = jsonContent.periodicna;
+        let vanredne = jsonContent.vanredna;
+
+        //Za periodicnu
+        let pom1 = req.body['datum'].split(".");
+        let danSaleKojaSeDodaje = pom1[0];
+        mjesecSale = pom1[1];
+        let pom2Mjesec = mjesecSale;
+        mjesecSale--;
+        mjesecSale = parseInt(mjesecSale);
+        pom2Mjesec = parseInt(pom2Mjesec);
+        godina = 2019;
+
+        let semestarRezervacije = "";
+        if(mjesecSale >=1 && mjesecSale <= 5) {
+            semestarRezervacije = "ljetni";
+        } else if(mjesecSale == 0 || (mjesecSale >= 9 && mjesecSale <= 11)) {
+            semestarRezervacije = "zimski";
         }
-    }
-    if(zauzeta == false) {
-        // ako nije zauzeta vanredno, provjeravamo za periodicne
-        let datumString = salaObject.datum + "";
-        let listaDatum = datumString.split(".");
-        let pomocniDatum = new Date(listaDatum[2], listaDatum[1] - 1, listaDatum[0], 0,0,0,0);
-        let danUSedmici = pomocniDatum.getDay(); // 0 je nedjelja, a kod nas je 0 ponedjeljak
-        // vrsimo pomjeranje
-        if(danUSedmici == 0) {
-            danUSedmici = 6; // nedjelja
-        } else {
-            danUSedmici--; // svi ostali dani
-        }
-        let semestar;
-        // odredjujemo semestar
-        if(listaDatum[1]>=2 && listaDatum[1]<=6) {
-            semestar = "ljetni";
-        } else if(listaDatum[1] == 1 || (listaDatum[1]>=10 && listaDatum[1]<=12)) {
-            semestar = "zimski";
-        }
-        // sta ako nije nijedan semestar, trebamo skontat
-        // provjera poklapa li se sa periodicnom
-        for(let i = 0; i < p.length; i++) {
-            if(semestar == p[i].semestar && danUSedmici == p[i].dan && salaObject.naziv == p[i].naziv && jeLiZauzetaUPeriodu(salaObject.pocetak, salaObject.kraj, p[i].pocetak, p[i].kraj)) {
-                zauzeta = true;
-                break; 
+        
+        let noviDatum = pom2Mjesec + "." + danSaleKojaSeDodaje + "." + godina;
+        let datumPomocna = new Date(noviDatum);
+        let danSale = datumPomocna.getDay();
+        danSale = dajDan(danSale);
+        
+        for (let i = 0; i < vanredne.length; i++)
+        {
+            //za validaciju vanredne i vanredne
+            if (vanredne[i].naziv == req.body['naziv'] && vanredne[i].datum == req.body['datum'])
+            {
+                //koristim funkciju iz kalendara, ako se vrijeme ne poklapa dodamo 
+                if (jeLiZauzetaUPeriodu(req.body['pocetak'], req.body['kraj'], vanredne[i].pocetak, vanredne[i].kraj) == 1)
+                {
+                    dodajSalu = true;
+                    break;
+                    
+                }
+            }
+            
+            //prolazi kroz listu vanrednih i provjerava na koji su dan rezervisane
+            if (req.body['periodicnaRezervacija'] == 1)
+            {
+                if (vanredne[i].naziv == req.body['naziv'])
+                {
+                    
+                    let p1 = vanredne[i].datum.split(".");
+                    let dan1 = p1[0];
+                    let mjesec1 = p1[1];
+                    mjesec1 = parseInt(mjesec1);
+                    let godina1 = 2019;
+
+                    let novi1 = mjesec1 + "." + dan1 + "." + godina1;
+                    let novi1Pom = new Date(novi1);
+                    let dan2 = novi1Pom.getDay();
+                    dan2 = dajDan(dan2);
+
+                    let semestarSaleIzListe = "";
+                    if(mjesec1 >=2 && mjesec1 <= 6) {
+                        semestarSaleIzListe = "ljetni";
+                    } else if(mjesec1 == 1 || (mjesec1 >= 10 && mjesec1 <= 12)) {
+                        semestarSaleIzListe = "zimski";
+                    }
+        
+                    if (jeLiZauzetaUPeriodu(req.body['pocetak'], req.body['kraj'], vanredne[i].pocetak, vanredne[i].kraj) == 1)
+                    {
+                        if (dan2 == danSale && semestarRezervacije == semestarSaleIzListe)
+                        {
+                            dodajSalu = true;
+                            break;
+                        } 
+                    }
+                }
             }
         }
-    }
-    console.log("prelistao i odredio u periodicnim");
-    // sad upisujemo ili prepisujemo i saljemo odgovor
-    if(zauzeta == true) {
-        // ako je zauzeta, postavljamo valid na false
-        parsiraniPodaci.valid = false;
-    } else {
-        // ako nije zauzeta, dodajemo je u neku od listi, update zauzeca.json i valid na true
-        parsiraniPodaci.valid = true;
-        // ako je periodicna, dodamo je u periodicne
-        if(salaObject.periodicna == true) {
-            let periodicnaLista = new Array(parsiraniPodaci.periodicna);
-            periodicnaLista.push({
-                dan : danUSedmici,
-                semestar : semestar,
-                pocetak : salaObject.pocetak,
-                kraj : salaObject.kraj,
-                naziv : salaObject.naziv,
-                predavac : salaObject.predavac
-            });
-            parsiraniPodaci.periodicna = periodicnaLista;
-            // sad ako je vanredna
-        } else {
-            let vanrednaLista = new Array(parsiraniPodaci.vanredna);
-            vanrednaLista.push({
-                datum : salaObject.datum,
-                pocetak : salaObject.pocetak,
-                kraj : salaObject.kraj,
-                naziv : salaObject.naziv,
-                predavac : salaObject.predavac
-            });
-            parsiraniPodaci.vanredna = vanrednaLista;
-        }
-    }
-    fs.writeFile('zauzeca.json', JSON.stringify(parsiraniPodaci), (err) => {
-        if (err) throw err;
-        console.log('Sve uredno zapisano');
-    });
-    res.sendFile(__dirname + "/zauzeca.json");
-});
 
-/*app.get("/index.js", function (req, res) {
-    res.sendFile(__dirname + "/index.js");
-});*/
+        //Ako je periodicna i van semestara
+        if (req.body['periodicnaRezervacija'] == 1)
+        {
+            if (semestarRezervacije == "")
+            {
+                dodajSalu = true;
+            }    
+        }
+
+    
+        for (let j = 0; j < periodicne.length; j++)
+        {
+            //provjera naziva sala
+            if (periodicne[j].naziv == req.body['naziv'] && periodicne[j].semestar == semestarRezervacije)
+            {
+                    //provjera da li se vrijeme poklapa
+                    if (jeLiZauzetaUPeriodu(req.body['pocetak'], req.body['kraj'], periodicne[j].pocetak, periodicne[j].kraj) == 1)
+                    {
+                        //provjera da li su na isti dan unutar sedmice
+                        if (danSale == periodicne[j].dan)
+                        {
+                            dodajSalu = true;
+                            break;
+                        }
+                    }
+            }
+        }
+         
+        if (dodajSalu == false)
+        {
+            if (semestarRezervacije != "")
+            {
+                if (req.body['periodicnaRezervacija'] == 1)
+                {
+                    let pomocnaSala = { dan : danSale, semestar : semestarRezervacije, pocetak : req.body['pocetak'], kraj : req.body['kraj'],
+                                    naziv : req.body['naziv'],  predavac : req.body['predavac']};
+                    jsonContent.periodicna.push(pomocnaSala);
+                }
+
+                else
+                {
+                    let pomocnaSala = req.body;
+                    delete pomocnaSala["periodicnaRezervacija"];
+                    jsonContent.vanredna.push(pomocnaSala);
+                }
+            }
+
+           else
+            {
+                let pomocnaSala = req.body;
+                delete pomocnaSala["periodicnaRezervacija"];
+                jsonContent.vanredna.push(pomocnaSala);
+            }
+            fs.writeFile("zauzeca.json", JSON.stringify(jsonContent),function(err, result) {
+                if(err) console.log('error', err);
+                jsonContent.valid = 1;
+                res.json(jsonContent);
+            });
+        }
+        else 
+        {
+            jsonContent.valid = 0;
+            res.json(jsonContent);
+        }
+
+      }); 
+ });
+
+ /*function jeLiZauzetaUPeriodu(pocetak, kraj, salaPocetak, salaKraj)
+{
+    let zauzeta = 0;
+    if (pocetak > salaPocetak && pocetak < salaKraj) 
+         zauzeta = 1;
+    else if (pocetak < salaPocetak && kraj > salaPocetak)
+        zauzeta = 1;
+    else if (pocetak == salaPocetak || kraj == salaKraj)
+        zauzeta = 1;    
+    return zauzeta;    
+}*/
+
+function dajDan(dan)
+{
+    if(dan == 0) 
+        {
+            dan = 6;
+        } else {
+            dan--;
+        }
+
+        return dan;
+}
+
 
 app.listen(8080);

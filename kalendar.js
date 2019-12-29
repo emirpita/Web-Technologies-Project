@@ -104,8 +104,8 @@ var vsLista = [{
 }];
 */
 
-var psLista = new Array();
-var vsLista = new Array();
+var psLista; //= new Array();
+var vsLista; // = new Array();
 
 // pomocne funkcije globalnog opsega
 
@@ -270,8 +270,10 @@ let Kalendar = (function() {
 		}
 
 	function ucitajPodatkeImpl(periodicna, redovna) {
-		psLista = periodicna.slice();
-		vsLista = redovna.slice();
+		//console.log(periodicna);
+		psLista = periodicna; //.slice();
+		//console.log(psLista);
+		vsLista = redovna; //.slice();
 	}
 
 	function iscrtajKalendarImpl(kalendarRef, mjesec) {
