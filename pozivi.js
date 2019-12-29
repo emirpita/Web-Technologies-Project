@@ -61,7 +61,7 @@ let Pozivi = (function() {
 				let jsonText = JSON.parse(ajax.responseText);
 				console.log(jsonText.slike);
 				cacheSlike(jsonText.slike);
-				ucitajPocetnu(jsonText.slike);
+				ubaciSlike(jsonText.slike);
 			}
 		}
 	}
