@@ -213,24 +213,49 @@ function jeLiZauzetaUPeriodu(pocetak, kraj, salaPocetak, salaKraj) {
 // zadatak 3
 app.get("/slike", function(req, res) {
 	// lista stringova
-	console.log("Dobio zahtjev")
+	console.log("Dobio zahtjev");
 	let listaSlikaServer = [];
 	fs.readdir(__dirname, (err, files) => {
 		console.log("procitao direktorij");
-		console.log(files);
 		if (err) console.log('error', err);
+		console.log(files);
 		files.forEach(file => {
+			console.log(file);
+			  // podrzani formati su jpg, png i gif
+			  if(file.match("/.png$/") || file.match("/.jpg$/") || file.match("/.gif$/")) {
+				  listaSlikaServer.push(file);
+			  }
+		});
+		 res.contentType('application/json');
+		res.json({slike: listaSlikaServer});
+	});
+	/*let fajlovi = procitajFolder();
+	for(let i = 0; i < fajlovi.length; i++) {
+		if(fajlovi[i].match("/.png$/") || fajlovi[i].match("/.jpg$/") || fajlovi[i].match("/.gif$/")) {
+			listaSlikaServer.push(fajlovi[i]);
+		}
+	}
+	console.log("Lista slika: \n" + listaSlikaServer);
+	res.contentType('application/json');
+	res.json({slike: listaSlikaServer});*/
+});
+
+function procitajFolder() {
+	let listaFajlova = [];
+	fs.readdir(__dirname, (err, files) => {
+		console.log("procitao direktorij");
+		if (err) console.log('error', err);
+		console.log(files);
+		listaFajlova.push(files);
+		/*files.forEach(file => {
 		console.log(file);
 		  // podrzani formati su jpg, png i gif
 		  if(file.match("/.png$/") || file.match("/.jpg$/") || file.match("/.gif$/")) {
 			  listaSlikaServer.push(file);
 		  }
-		});
-	  });
-	//console.log(listaSlikaServer);
-	res.contentType('application/json');
-	res.json({slike: listaSlikaServer});
-	console.log("Lista slika: \n" + listaSlikaServer);
-});
+		});*/
+	});
+	return listaFajlova;
+}
 
 app.listen(8080);

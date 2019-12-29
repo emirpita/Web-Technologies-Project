@@ -8,16 +8,16 @@ function cacheSlike(slikeArg) {
     console.log("ucitava");
 }
 
-function ucitajPocetnu() {
-    Pozivi.ucitajSlike();
-    let duzina = listaSlika.length;
+function ucitajPocetnu(listaSlikaArg) {
+    // Pozivi.ucitajSlike();
+    let duzina = listaSlikaArg.length;
     let kontejner = document.getElementsByClassName("grid-container")[0];
     if(duzina>=3) {
         for(let i=0; i<3; i++) {
             // slike su ucitane staticki
             let box = document.createElement("div");
             var slika = document.createElement('img'); 
-            slika.src = "http://localhost:8080/" + listaSlika[i]; 
+            slika.src = "http://localhost:8080/" + listaSlikaArg[i]; 
             box.appendChild(slika);   
             kontejner.appendChild(box);
             // ucitane prve tri slike
@@ -27,7 +27,7 @@ function ucitajPocetnu() {
             // slike su ucitane staticki
             let box = document.createElement("div");
             var slika = document.createElement('img'); 
-            slika.src = "http://localhost:8080/" + listaSlika[i]; 
+            slika.src = "http://localhost:8080/" + listaSlikaArg[i]; 
             box.appendChild(slika);   
             kontejner.appendChild(box);
             // ucitane prve tri slike

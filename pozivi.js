@@ -52,19 +52,21 @@ let Pozivi = (function() {
 	function ucitajSlike() {
 		var ajax = new XMLHttpRequest();
 
-		ajax.open("GET", "http://localhost:8080/slike", true);
-		
+		ajax.open("GET", "http://localhost:8080/slike", true); // true
+		ajax.send();
+
 		ajax.onreadystatechange = function () {
         if(ajax.readyState === 4) {
-            if(ajax.status === 200 || jsonFile.status == 0) {   
+            if(ajax.status === 200 || ajax.status == 0) {   
 				let jsonText = JSON.parse(ajax.responseText);
 				console.log(jsonText.slike);
 				cacheSlike(jsonText.slike);
-                }
-            }
-        }
-       ajax.send();
+				ucitajPocetnu(jsonText.slike);
+			}
+		}
 	}
+}
+
 	
 	return {
 		ucitajPodatke: ucitajPodatke,
