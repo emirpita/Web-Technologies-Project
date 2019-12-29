@@ -33,10 +33,10 @@ function ucitajPocetnu() {
     }
 }
 
-function sljedeci() {
+function next() {
     
 }
 
-function prethodni() {
+function previous() {
     
 }
