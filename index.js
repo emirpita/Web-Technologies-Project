@@ -61,7 +61,7 @@ app.post('/rezervacija.html',function(req,res){
 
         //Za periodicnu
         let pom1 = req.body['datum'].split(".");
-        let danSaleKojaSeDodaje = pom1[0];
+        let danSaleKojaSeDodaje = parseInt(pom1[0]);
         mjesecSale = pom1[1];
         let pom2Mjesec = mjesecSale;
         mjesecSale--;
@@ -223,5 +223,12 @@ function dajDan(dan)
         return dan;
 }
 
+function jeLiZauzetaUPeriodu(pocetak, kraj, salaPocetak, salaKraj) {
+	let zauzeta = 0;
+	if (pocetak > salaPocetak && pocetak < salaKraj) return 1;
+	else if (pocetak < salaPocetak && kraj > salaPocetak) return 1;
+	else if (pocetak == salaPocetak || kraj == salaKraj) return 1;
+	return 0;
+}
 
 app.listen(8080);

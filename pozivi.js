@@ -21,7 +21,7 @@ let Pozivi = (function () {
     function posaljiSaluNaServer(salaZaPoslati)
     {
        let ajax = new XMLHttpRequest(); 
-       ajax.open("POST", "//localhost:8080/zauzeca.json", true);
+       ajax.open("POST", "//localhost:8080/rezervacija.html", true);
        ajax.setRequestHeader("Content-Type", "application/json");
        ajax.send(JSON.stringify(salaZaPoslati));
    
@@ -30,7 +30,7 @@ let Pozivi = (function () {
                let jsonText = JSON.parse(ajax.responseText);
                if (jsonText.valid == 1){
                    Kalendar.ucitajPodatke(jsonText.periodicna, jsonText.vanredna);
-                   osvjeziKalendar();
+                   refreshKalendar();
                }
                else 
                {
