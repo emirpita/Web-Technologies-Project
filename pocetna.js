@@ -1,3 +1,5 @@
+// ukoliko se doda nova slika na server, stranica se treba nanovo ucitati
+
 let listaSlika; // ili ostaviti prazno ili staviti []
 let indeksDosadUcitanih = 0;
 
