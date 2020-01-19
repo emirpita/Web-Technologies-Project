@@ -15,6 +15,8 @@ let listaFajlova = [], listaSlikaServer = [];
 app.use(express.static(__dirname));
 app.use(express.json()) // for parsing application/json
 // app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
+// mozda i ovo bude trebalo
+// app.use(express.static(__dirname + "/modeli"));
 
 app.get("/rezervacija.html", function(req, res) {
 	res.sendFile(__dirname + "/rezervacija.html");
