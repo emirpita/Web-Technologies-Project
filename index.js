@@ -82,6 +82,12 @@ db.sequelize.sync({force:true}).then(function(){
 	console.log("Radi baza");
 });
 
+app.get("/osoblje", function(req, res) {
+	db.Osoblje.findAll({ attributes: ['ime', 'prezime', 'uloga']}).then(function(osoblje) {
+        res.json(osoblje);
+    });	
+});
+
 // spirala 3
 
 app.get("/rezervacija.html", function(req, res) {

@@ -67,10 +67,26 @@ let Pozivi = (function() {
 	}
 }
 
+	function ucitajPodatkeIzBaze() {
+		var ajax = new XMLHttpRequest();
+
+		ajax.open("GET", "http://localhost:8080/osoblje", true); // true
+		ajax.send();
+
+		ajax.onreadystatechange = function () {
+			if(ajax.readyState === 4) {
+        		if(ajax.status === 200 || ajax.status == 0) {   
+					loadListuOsoblja(JSON.parse(ajax.responseText));
+				}
+			}
+		}
+	}
+
 	
 	return {
 		ucitajPodatke: ucitajPodatke,
 		posaljiSaluNaServer: posaljiSaluNaServer,
-		ucitajSlike: ucitajSlike
+		ucitajSlike: ucitajSlike,
+		ucitajPodatkeIzBaze: ucitajPodatkeIzBaze
 	}
 }());
