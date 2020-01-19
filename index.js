@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const fs = require('fs');
 const path = require('path');
 const url = require('url');
+const db = require('./db.js');
 
 const app = express();
 
@@ -17,6 +18,71 @@ app.use(express.json()) // for parsing application/json
 // app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 // mozda i ovo bude trebalo
 // app.use(express.static(__dirname + "/modeli"));
+
+
+// rad sa bazom, spirala 4
+
+db.sequelize.sync({force:true}).then(function(){
+	// Podaci dani u postavci spirale
+    db.Osoblje.create({
+        id: 1,
+        ime: 'Neko',
+        prezime: 'Nekić',
+        uloga: 'profesor'
+    }).then (object =>{ db.Osoblje.create({
+        id: 2,
+        ime: 'Drugi',
+        prezime: 'Neko',
+        uloga: 'asistent'
+    }).then (object => {
+        db.Osoblje.create({
+            id: 3,
+            ime: 'Test',
+            prezime: 'Test',
+            uloga: 'asistent'
+        }).then (object => {
+            //za salu
+            db.Sala.create({
+                naziv: '1-11',
+                zaduzenaOsoba: 1
+            }).then (object => {
+                db.Sala.create({
+                    naziv: '1-15',
+                    zaduzenaOsoba: 2
+                }).then (object => {
+                    //za termin
+                    db.Termin.create({
+                        redovni: false,
+                        dan: null,
+                        datum: '19.1.2019',
+                        semestar: null,
+                        pocetak: '10:00',
+                        kraj: '15:00'
+                    }).then (object => { db.Termin.create({
+                        redovni: true,
+                        dan: 0,
+                        datum: null,
+                        semestar: 'zimski',
+                        pocetak: '13:00',
+                        kraj: '14:00'
+                    }).then (object => {
+                
+                        //za rezervaciju
+                        db.Rezervacija.create({
+                            termin: 1,
+                            sala: 1,
+                            osoba: 1
+                        })
+                        db.Rezervacija.create({
+                            termin: 2,
+                            sala: 1,
+                            osoba: 3
+                        })});});});});});
+    });});
+	console.log("Radi baza");
+});
+
+// spirala 3
 
 app.get("/rezervacija.html", function(req, res) {
 	res.sendFile(__dirname + "/rezervacija.html");
