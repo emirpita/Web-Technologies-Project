@@ -1,4 +1,4 @@
-let listaOsoblje = [];
+var listaOsoblje = [];
 
 function loaduj() {
     Pozivi.ucitajOsobljeBaza();
@@ -10,8 +10,7 @@ function loaduj() {
 }
 
 
-function upisiSpisakOsoba(podaci)
-{
+function upisiSpisakOsoba(podaci) {
     let sadrzajListe = "";
     let spisakOsoblje = document.getElementById("spisakOsoblje");
     spisakOsoblje.innerHTML = "";
@@ -24,9 +23,16 @@ function upisiSpisakOsoba(podaci)
             }
         }
         if (jeLiUSali == false) {
-            sadrzajListe = sadrzajListe + osoblje[i].ime + " " +  osoblje[i].prezime + " (" +  osoblje[i].uloga + ") je u kancelariji "+ "<br>" ; 
+            sadrzajListe = sadrzajListe + listaOsoblje[i].ime + " " +  listaOsoblje[i].prezime + " (" +  listaOsoblje[i].uloga + ") je u kancelariji "+ "<br>" ; 
         }
         jeLiUSali = false;
     }
-    spisakOsoblje.innerHTML(sadrzajListe);
+    spisakOsoblje.innerHTML = sadrzajListe;
+}
+
+function setListaOsoblje(lista) {
+    listaOsoblje = [];
+    for ( let i = 0; i < lista.length; i++) {
+       listaOsoblje.push({ime: lista[i].ime, prezime: lista[i].prezime, uloga: lista[i].uloga});
+    }
 }

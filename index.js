@@ -15,7 +15,7 @@ let ucitaniPodaci ={};
 
 // sve sto ce mi trebati
 app.use(express.static(__dirname));
-app.use(express.json()) // for parsing application/json
+app.use(express.json()); // for parsing application/json
 // app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 // mozda i ovo bude trebalo
 // app.use(express.static(__dirname + "/modeli"));
@@ -271,8 +271,7 @@ app.get('/getRezervacije',function (req, res) {
 });
 
 
-function upisiRezervacijuUBazu(salaBaza)
-{
+function upisiRezervacijuUBazu(salaBaza) {
     let idZaTermin, idZaOsoblje, idZaSalu;
     let redovnaRezervacija = false;
     let danRezervacije = null;
@@ -336,7 +335,7 @@ app.get("/osobeUSali",function (req, res) {
     }).then (function(lista){
         lista.forEach(function(rez){
              if (!rez.Termin.redovni) {
-                let datumIzTermina = razdvoji(rez.Termin.datum);
+                let datumIzTermina = splitDatum(rez.Termin.datum);
                 if (datumIzTermina.dan == danasnjiDatum.getDate() && datumIzTermina.mjesec == (danasnjiDatum.getMonth())) {   
                     if (preklapaLiSe(rez.Termin.pocetak, rez.Termin.kraj, trenutniSati, trenutneMinute) == 1) {
                         podaci.push({ime: rez.Osoblje.ime, prezime: rez.Osoblje.prezime, uloga: rez.Osoblje.uloga, naziv: rez.Sala.naziv});
@@ -355,7 +354,18 @@ app.get("/osobeUSali",function (req, res) {
         });
         res.json(podaci);
     });
- });   
+ }); 
+ 
+ function splitDatum(datum)
+{
+    let pom1 = datum.split(".");
+    let danSale = pom1[0];
+    let mjesecSale = pom1[1];
+    mjesecSale--;
+    mjesecSale = parseInt(mjesecSale);
+
+    return ({dan: danSale, mjesec: mjesecSale});
+}
 
 
 // spirala 3
@@ -607,8 +617,7 @@ app.get("/slike", function(req, res) {
 	});
 });
 
-function preklapaLiSe(pocetak, kraj, sati, minute)
-{
+function preklapaLiSe(pocetak, kraj, sati, minute) {
     var satiPocetak = pocetak.split(":")[0];
     var minutePocetak = pocetak.split(":")[1];
 

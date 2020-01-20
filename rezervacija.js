@@ -1,7 +1,7 @@
 function ucitaj() {
     // Mora se eliminisati Pozivi.ucitajPodatke();
     Pozivi.ucitajPodatkeBaza();
-    Pozivi.ucitajOsobljeBaza();
+    Pozivi.ucitajOsobljeRezervacijaBaza();
     ucitajKalendar();
 }
 
@@ -27,6 +27,5 @@ function loadListuOsoblja(osoblje) {
          "prezime": osoblje[i].prezime, 
          "uloga": osoblje[i].uloga };
       osobljeIzBaze.set(i, osoba);
-      listaOsoblje.push(osoba);
    }
 }
