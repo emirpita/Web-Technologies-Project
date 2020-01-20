@@ -93,8 +93,8 @@ app.get("/osoblje", function(req, res) {
 // Za ucitavanje rezervacija svihj u pomocnu varijablu (kao atribut nesto)
 app.get('/getRezervacije',function (req, res) {
     
-    let periodicnaBaza = [];
-    let vanrednaBaza=[];
+    let periodicnaZauzecaBaza = [];
+    let vanrednaZauzecaBaza= [];
 
     db.Rezervacija.findAll({
       include: [
@@ -111,19 +111,19 @@ app.get('/getRezervacije',function (req, res) {
     }).then (function(lista){
         lista.forEach(function(rez){
              if (!rez.Termin.redovni) {
-                vanrednaBaza.push({datum: rez.Termin.datum, pocetak: rez.Termin.pocetak,
+                vanrednaZauzecaBaza.push({datum: rez.Termin.datum, pocetak: rez.Termin.pocetak,
                 kraj: rez.Termin.kraj, naziv: rez.Sala.naziv, predavac: rez.Osoblje.ime + " " + rez.Osoblje.prezime, 
                 uloga:rez.Osoblje.uloga});
              }
              else {
-                periodicnaBaza.push({dan: rez.Termin.dan , semestar: rez.Termin.semestar, 
+                periodicnaZauzecaBaza.push({dan: rez.Termin.dan , semestar: rez.Termin.semestar, 
                 pocetak: rez.Termin.pocetak, kraj: rez.Termin.kraj , naziv: rez.Sala.naziv, 
                 predavac: rez.Osoblje.ime + " " + rez.Osoblje.prezime, uloga: rez.Osoblje.uloga });
              }
         });
     
-        ucitaniPodaci["periodicna"] = periodicnaBaza;
-		ucitaniPodaci["vanredna"] = vanrednaBaza;
+        ucitaniPodaci["periodicna"] = periodicnaZauzecaBaza;
+		ucitaniPodaci["vanredna"] = vanrednaZauzecaBaza;
         res.json(ucitaniPodaci);
     });
  });
@@ -240,20 +240,20 @@ app.get('/getRezervacije',function (req, res) {
 						naziv: req.body['naziv'],
 						predavac: req.body['predavac']
 					};
-					upisiRezervacijuUBazu(pomocnSala);// ovdje
+					upisiRezervacijuUBazu(pomocnaSala);// ovdje
 				}
 
 				else {
 					let pomocnaSala = req.body;
 					delete pomocnaSala["periodicnaRezervacija"];
-					upisiRezervacijuUBazu(pomocnSala); // ovdje
+					upisiRezervacijuUBazu(pomocnaSala); // ovdje
 				}
 			}
 
 			else {
 				let pomocnaSala = req.body;
 				delete pomocnaSala["periodicnaRezervacija"];
-				upisiRezervacijuUBazu(pomocnSala); // ovdje
+				upisiRezervacijuUBazu(pomocnaSala); // ovdje
 			}	
 		}
 		else {

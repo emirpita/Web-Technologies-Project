@@ -294,8 +294,31 @@ let Kalendar = (function() {
 					if (dan != "") {
 						if (document.getElementById("periodicna").checked) periodicnaRezervacija = 1;
 						else periodicnaRezervacija = 0;
+
+						// postavili dan
 						let datumZaDodavanje = dan + "." + mjesecZaDodavanje + "." + trenutnaGodina;
 						datumZaDodavanjeDrugiFormat = dan + "/" + mjesecZaDodavanje + "/" + trenutnaGodina;
+
+						// za predavaca
+						let predavac = document.getElementsByClassName("listaOsoblje")[0].value;
+                		let predavacLista = predavac.split(" ");
+                		let predavacIme = predavacLista[0];
+                		let predavacPrezime = predavacLista[1];
+                		let idOsoblje;
+						let uloga;
+						
+						// provjeravamo je li postoji ta osoba, delegiramo provjeru sa baze na klijenta
+						for (let i = 0; i < osobljeIzBaze.size; i++) {
+                   			let osoba = osobljeIzBaze.get(i);
+                    		let ime = osoba.ime;
+                    		let pre = osoba.prezime;
+                    		uloga = osoba.uloga;
+                    		idOsoblje = i+1;
+							if (ime == predavacIme && pre == predavacPrezime) {
+								break;
+							} 
+						}
+
 						if (jeLiValidnaVanredna(datumZaDodavanje, pocetakZaDodavanje, krajZaDodavanje) == 1) {
 							let sala = {
 								"periodicnaRezervacija": periodicnaRezervacija,
@@ -303,7 +326,10 @@ let Kalendar = (function() {
 								"pocetak": pocetakZaDodavanje,
 								"kraj": krajZaDodavanje,
 								"naziv": salaZaDodavanje,
-								"predavac": "predavac"
+								"predavacIme": predavacIme,
+								"predavacPrezime" : predavacPrezime,
+								"uloga" : uloga,
+								"idOsobe" : idOsoblje
 							};
 
 							let dodajSalu = false;
@@ -400,6 +426,7 @@ let Kalendar = (function() {
 							else {
 								if (confirm("Da li želite da rezervisati ovaj termin?") == true) {
 									Pozivi.posaljiSaluNaServer(sala);
+									refreshKalendar(); // mozda ovo
 								}
 							}
 						}
