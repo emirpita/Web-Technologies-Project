@@ -25,6 +25,8 @@ app.use(express.json()) // for parsing application/json
 
 db.sequelize.sync({force:true}).then(function(){
 	// Podaci dani u postavci spirale
+
+	// provjeriti overwrite baze
     db.Osoblje.create({
         id: 1,
         ime: 'Neko',
@@ -324,6 +326,34 @@ app.get("/", function(req, res) {
 
 app.get("/sale.html", function(req, res) {
 	res.sendFile(__dirname + "/sale.html");
+});
+
+app.get("/osoblje.html", function(req, res) {
+	res.sendFile(__dirname + "/osoblje.html");
+});
+
+app.get("/osoblje.js", function(req, res) {
+	res.sendFile(__dirname + "/osoblje.js");
+});
+
+app.get("/db.js", function(req, res) {
+	res.sendFile(__dirname + "/db.js");
+});
+
+app.get("/modeli/osoblje.js", function(req, res) {
+	res.sendFile(__dirname + "/modeli/osoblje.js");
+});
+
+app.get("/modeli/rezervacija.js", function(req, res) {
+	res.sendFile(__dirname + "/modeli/rezervacija.js");
+});
+
+app.get("/modeli/sala.js", function(req, res) {
+	res.sendFile(__dirname + "/modeli/sala.js");
+});
+
+app.get("/modeli/termin.js", function(req, res) {
+	res.sendFile(__dirname + "/modeli/termin.js");
 });
 
 app.get("/unos", function(req, res) {
