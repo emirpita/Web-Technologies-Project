@@ -1,3 +1,5 @@
+import { json } from "body-parser";
+
 // klijent
 let Pozivi = (function() {
 	let vanrednaZauzeca = [];
@@ -108,12 +110,38 @@ let Pozivi = (function() {
 		}
 	}
 
+	function dajOsobljeUSalama() {
+		var ajax = new XMLHttpRequest();
+
+		ajax.open("GET", "http://localhost:8080/osobeUSali", true); // true
+		ajax.send();
+
+		ajax.onreadystatechange = function () {
+			if(ajax.readyState === 4) {
+        		if(ajax.status === 200 || ajax.status == 0) {   
+					// kreiramo privremenu listu
+					let lista = [];
+					let jsonLista = Array.from(JSON.parse(ajax.responseText)); // mozda moze bez ovog
+					for(let i = 0; i < jsonLista.length; i++) {
+						lista.push({ime: jsonLista[i].ime, 
+							prezime: jsonLista[i].prezime,
+							uloga: jsonLista[i].uloga,
+							naziv: jsonLista[i].naziv
+						});
+					}
+					upisiSpisakOsoba(podaci);
+				}
+			}
+		}
+    }
+
 	
 	return {
 		ucitajPodatkeFajl: ucitajPodatkeFajl,
 		ucitajPodatkeBaza: ucitajPodatkeBaza,
 		posaljiSaluNaServer: posaljiSaluNaServer,
 		ucitajSlike: ucitajSlike,
-		ucitajOsobljeBaza: ucitajOsobljeBaza
+		ucitajOsobljeBaza: ucitajOsobljeBaza,
+		dajOsobljeUSalama: dajOsobljeUSalama
 	}
 }());

@@ -27,5 +27,6 @@ function loadListuOsoblja(osoblje) {
          "prezime": osoblje[i].prezime, 
          "uloga": osoblje[i].uloga };
       osobljeIzBaze.set(i, osoba);
+      listaOsoblje.push(osoba);
    }
 }

@@ -305,6 +305,58 @@ function upisiRezervacijuUBazu(salaBaza)
         });
 }
 
+app.get("/osobeUSali",function (req, res) {
+    let podaci = [];
+	
+	// za odredjivanje dana
+    let pomocnaDatum = new Date();
+    let danasnjiDatum = new Date(TRENUTNA_GODINA, pomocnaDatum.getMonth(), pomocnaDatum.getDate(), pomocnaDatum.getHours(), pomocnaDatum.getMinutes());
+    let trenutniSati = danasnjiDatum.getHours();
+    let trenutneMinute = danasnjiDatum.getMinutes();
+    let trenutniDan = danasnjiDatum.getDay();
+    if(trenutniDan == 0) {
+        trenutniDan = 6;
+    } else {
+        trenutniDan--;
+	}
+	
+	// upit, spajamo podatke
+    db.Rezervacija.findAll({
+      include: [
+          {
+              model: db.Termin
+          },
+         {
+              model: db.Sala
+          },
+          {
+              model: db.Osoblje
+          } 
+      ]
+    }).then (function(lista){
+        lista.forEach(function(rez){
+             if (!rez.Termin.redovni) {
+                let datumIzTermina = razdvoji(rez.Termin.datum);
+                if (datumIzTermina.dan == danasnjiDatum.getDate() && datumIzTermina.mjesec == (danasnjiDatum.getMonth())) {   
+                    if (preklapaLiSe(rez.Termin.pocetak, rez.Termin.kraj, trenutniSati, trenutneMinute) == 1) {
+                        podaci.push({ime: rez.Osoblje.ime, prezime: rez.Osoblje.prezime, uloga: rez.Osoblje.uloga, naziv: rez.Sala.naziv});
+                    }
+                }
+             }
+             else {
+                if (rez.Termin.semestar == "ljetni" || rez.Termin.semestar == "zimski") {
+                    if (rez.Termin.dan == trenutniDan) {
+                        if (preklapaLiSe(rez.Termin.pocetak, rez.Termin.kraj, trenutniSati, trenutneMinute) == 1) {
+                            podaci.push({ime: rez.Osoblje.ime, prezime: rez.Osoblje.prezime, uloga: rez.Osoblje.uloga, naziv: rez.Sala.naziv});
+                  		}
+                    }
+                }
+             }
+        });
+        res.json(podaci);
+    });
+ });   
+
 
 // spirala 3
 
@@ -554,6 +606,27 @@ app.get("/slike", function(req, res) {
 		res.json({slike: listaSlikaServer});
 	});
 });
+
+function preklapaLiSe(pocetak, kraj, sati, minute)
+{
+    var satiPocetak = pocetak.split(":")[0];
+    var minutePocetak = pocetak.split(":")[1];
+
+    var satiKraj = kraj.split(":")[0];
+    var minuteKraj = kraj.split(":")[1];
+
+    if (satiPocetak < sati && satiKraj > sati) return 1; //unutar
+    if (satiPocetak > sati || satiKraj < sati) return 0; //van
+    if (satiPocetak == sati || satiKraj == sati) 
+    {
+        if(satiKraj > sati) return 1;
+        if (satiPocetak < sati) return 1;
+        if (minutePocetak < minute && minuteKraj > minute) return 1;
+        else if (minutePocetak == minute && minuteKraj > minute) return 1;
+        else if (minutePocetak < minute && minuteKraj == minute) return 1;
+        else return 0;
+    }
+}
 
 /*
 // zadatak 3, verzija 2, prvo citati fajlove, zatim ih spasiti, a zatim ih poslati
