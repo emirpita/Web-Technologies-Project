@@ -1,11 +1,11 @@
 function ucitaj() {
     // Mora se eliminisati Pozivi.ucitajPodatke();
-    Pozivi.ucitajPodatke();
-    Pozivi.ucitajPodatkeIzBaze();
+    Pozivi.ucitajPodatkeBaza();
+    Pozivi.ucitajOsobljeBaza();
     ucitajKalendar();
 }
 
-let mapaOsobljaIzBaze = new Map();
+//let mapaOsobljaIzBaze = new Map();
 
 function loadListuOsoblja(osoblje) {
    var selectOsoblje = document.getElementsByClassName("osobljeIzbor")[0];

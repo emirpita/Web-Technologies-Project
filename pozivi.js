@@ -1,7 +1,9 @@
 // klijent
 let Pozivi = (function() {
+	let vanrednaZauzeca = [];
+	let periodicnaZauzeca = [];
 
-	function ucitajPodatke() {
+	function ucitajPodatkeFajl() {
 		var ajax = new XMLHttpRequest();
 
 		ajax.open("GET", "http://localhost:8080/unos", true);
@@ -21,6 +23,28 @@ let Pozivi = (function() {
 	}
 
 	// nova verzija funkcije ucitaj podatke
+	function ucitajPodatkeBaza() {
+		var ajax = new XMLHttpRequest();
+
+		ajax.open("GET", "http://localhost:8080/getRezervacije", true);
+		ajax.send();
+
+		ajax.onreadystatechange = function() {
+			if (ajax.readyState == 4 && ajax.status == 200) {
+				// ucitati u periodicnaZauzeca i u VanrednaZauzeca
+				let jsonText = JSON.parse(ajax.responseText);
+				let kalendar = document.getElementsByClassName("kalendar")[0];
+				kalendar.innerHTML = "";
+				vanrednaZauzeca = jsonText.vanredna;
+				periodicnaZauzeca = jsonText.periodicna;
+				// moze se i periodicnaZauzeca i vanrednaZauzeca
+				Kalendar.ucitajPodatke(jsonText.periodicna, jsonText.vanredna);
+				Kalendar.iscrtajKalendar(kalendar, pomocnaMjesec);
+				Kalendar.obojiZauzeca(document.getElementsByClassName("kalendar"), pomocnaMjesec, document.getElementsByClassName("sale")[0].value,
+					document.getElementById("pocetak").value, document.getElementById("kraj").value);
+			}
+		}
+	}
 
 
 	function posaljiSaluNaServer(salaZaPoslati) {
@@ -32,14 +56,16 @@ let Pozivi = (function() {
 		ajax.onreadystatechange = function() {
 			if (ajax.readyState == 4 && ajax.status == 200) {
 				let jsonText = JSON.parse(ajax.responseText);
-				if (jsonText.valid == 1) {
-					Kalendar.ucitajPodatke(jsonText.periodicna, jsonText.vanredna);
+				if (jsonText == 1) {
+					Pozivi.ucitajPodatkeBaza();
+					Kalendar.ucitajPodatke(periodicnaZauzeca, vanrednaZauzeca);
 					refreshKalendar();
 				}
 				else {
 					alert("Nije moguće rezervisati salu " + salaZaPoslati.naziv + " za navedeni datum " + datumZaDodavanjeDrugiFormat + " i termin od " + salaZaPoslati.pocetak + " do " + salaZaPoslati.kraj + "!");
 					// mozda suvisno, ali radi
-					Pozivi.ucitajPodatke();
+					Pozivi.ucitajPodatkeBaza();
+					Kalendar.ucitajPodatke(periodicnaZauzeca, vanrednaZauzeca);
 					refreshKalendar();
 					// moze i ovo
 				}
@@ -67,7 +93,7 @@ let Pozivi = (function() {
 	}
 }
 
-	function ucitajPodatkeIzBaze() {
+	function ucitajOsobljeBaza() {
 		var ajax = new XMLHttpRequest();
 
 		ajax.open("GET", "http://localhost:8080/osoblje", true); // true
@@ -84,9 +110,10 @@ let Pozivi = (function() {
 
 	
 	return {
-		ucitajPodatke: ucitajPodatke,
+		ucitajPodatkeFajl: ucitajPodatkeFajl,
+		ucitajPodatkeBaza: ucitajPodatkeBaza,
 		posaljiSaluNaServer: posaljiSaluNaServer,
 		ucitajSlike: ucitajSlike,
-		ucitajPodatkeIzBaze: ucitajPodatkeIzBaze
+		ucitajOsobljeBaza: ucitajOsobljeBaza
 	}
 }());
