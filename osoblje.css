@@ -1,0 +1,103 @@
+.meni {
+    background-color: #76aad8;
+    border-style: solid;
+    border-color: greenyellow;
+    border-width: 1px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    top: 25px;
+    height: 60px;
+    width: 825px;
+    text-align: center;
+}
+
+.meni li {
+    margin-top: 20px;
+    position: relative;
+    text-align: center;
+    width: 15%;
+    top: 0;
+    display: inline-block;
+}
+
+a {
+    color: black;
+}
+  
+#trenutna { 
+    text-decoration: none;
+}
+
+.logo {
+    position: absolute;
+    width: 20%;
+    height: 50%;
+    top: 0;
+    left: 40%;
+    transform: translateY(-90%);
+}
+
+.sadrzaj {
+    margin-top: 2.5%;
+    border-style: solid;
+    border-color: greenyellow;
+    background-color: #76aad8;
+    border-width: 1px;
+    width: 825px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+.sadrzaj img {
+    height: 102px;
+    width: 102px;
+    margin:0 auto;
+    display: grid;
+    align-items: center;
+    padding: 20px 20px 20px 20px;
+}
+
+
+@media only screen and (max-width: 805px) {
+
+
+    .sadrzaj {
+        height: 1120px;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+
+    .meni li {
+        margin-top: 0px;
+        margin-right: 4%;
+        display: block;
+    }
+
+    .meni ul {
+        overflow: auto;
+    }
+       
+    .meni {
+        height: auto;
+        width: auto;
+    }
+    
+    .logo {
+        transform: translateY(-50%);
+    }
+    
+    .sadrzaj{
+        height: auto;
+        width: auto;
+        overflow: auto;
+        text-align: left;
+    }
+
+    .sadrzaj img {
+        width: 81.6px;
+        height: 81.6px;
+    }
+}
