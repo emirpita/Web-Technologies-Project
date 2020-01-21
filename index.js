@@ -165,12 +165,7 @@ app.get('/getRezervacije',function (req, res) {
 	let danSale = datumPomocna.getDay();
 	// validacija na serveru, moguce duplo smanjivanje dana
 	console.log("dan sale na serveru prije --(index, line 165): " + danSale);
-	if (danSale == 0) {
-		danSale = 6;
-	}
-	else {
-		danSale--;
-	}
+	danSale = prilagodiDan(danSale);
 	console.log("dan sale na serveru (index, line 165): " + danSale);
 	// moguce rjesenje, postaviti flag da se provjeri je li validirana na serveru ili na klijentu,
 	// globalna varijabla ili atribut u objektu
@@ -200,12 +195,7 @@ app.get('/getRezervacije',function (req, res) {
 				let datumTmpPom = new Date(datumTmp);
 				let danTmp = datumTmpPom.getDay();
 				// moguce ponovno smanjivanje dana, pogledati liniju 174
-				if (danTmp == 0) {
-					danTmp = 6;
-				}
-				else {
-					danTmp--;
-				}
+				danTmp = prilagodiDan(danTmp);
 				console.log("dan sale na serveru 2 (index, line 200): " + danTmp);
 
 				let semestarSaleIzListe = "";
@@ -328,11 +318,7 @@ app.get("/osobeUSali",function (req, res) {
     let trenutniSati = danasnjiDatum.getHours();
     let trenutneMinute = danasnjiDatum.getMinutes();
     let trenutniDan = danasnjiDatum.getDay();
-    if(trenutniDan == 0) {
-        trenutniDan = 6;
-    } else {
-        trenutniDan--;
-	}
+    trenutniDan = prilagodiDan(trenutniDan);
 	
 	// upit, spajamo podatke
     db.Rezervacija.findAll({
@@ -606,6 +592,15 @@ function jeLiZauzetaUPeriodu(pocetak, kraj, salaPocetak, salaKraj) {
 	else if (pocetak < salaPocetak && kraj > salaPocetak) return 1;
 	else if (pocetak == salaPocetak || kraj == salaKraj) return 1;
 	return 0;
+}
+
+function prilagodiDan(dan) {
+    if(dan == 0) {
+        dan = 6;
+    } else {
+        dan--;
+    }
+	return dan;
 }
 
 // zadatak 3
