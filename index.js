@@ -111,21 +111,21 @@ app.get('/getRezervacije',function (req, res) {
           } 
       ]
     }).then (function(lista){
-        lista.forEach(function(rez){
-             if (!rez.Termin.redovni) {
-                vanrednaZauzecaBaza.push({datum: rez.Termin.datum, pocetak: rez.Termin.pocetak,
-                kraj: rez.Termin.kraj, naziv: rez.Sala.naziv, predavac: rez.Osoblje.ime + " " + rez.Osoblje.prezime, 
-                uloga:rez.Osoblje.uloga});
+        lista.forEach(function(rezultat){
+             if (!rezultat.Termin.redovni) {
+                vanrednaZauzecaBaza.push({datum: rezultat.Termin.datum, pocetak: rezultat.Termin.pocetak,
+                kraj: rezultat.Termin.kraj, naziv: rezultat.Sala.naziv, predavac: rezultat.Osoblje.ime + " " + rezultat.Osoblje.prezime, 
+                uloga:rezultat.Osoblje.uloga});
              }
              else {
-                periodicnaZauzecaBaza.push({dan: rez.Termin.dan , semestar: rez.Termin.semestar, 
-                pocetak: rez.Termin.pocetak, kraj: rez.Termin.kraj , naziv: rez.Sala.naziv, 
-                predavac: rez.Osoblje.ime + " " + rez.Osoblje.prezime, uloga: rez.Osoblje.uloga });
+                periodicnaZauzecaBaza.push({dan: rezultat.Termin.dan , semestar: rezultat.Termin.semestar, 
+                pocetak: rezultat.Termin.pocetak, kraj: rezultat.Termin.kraj , naziv: rezultat.Sala.naziv, 
+                predavac: rezultat.Osoblje.ime + " " + rezultat.Osoblje.prezime, uloga: rezultat.Osoblje.uloga });
              }
         });
     
-        ucitaniPodaci["periodicna"] = periodicnaZauzecaBaza;
-		ucitaniPodaci["vanredna"] = vanrednaZauzecaBaza;
+        ucitaniPodaci.periodicna = periodicnaZauzecaBaza;
+		ucitaniPodaci.vanredna = vanrednaZauzecaBaza;
         res.json(ucitaniPodaci);
     });
  });
@@ -272,34 +272,35 @@ app.get('/getRezervacije',function (req, res) {
 
 
 function upisiRezervacijuUBazu(salaBaza) {
-    let idZaTermin, idZaOsoblje, idZaSalu;
-    let redovnaRezervacija = false;
+    let idTerTmp, idOsobljeTmp, idSalaTmp;
+    let jeLiRedovna = false;
     let danRezervacije = null;
     let datumRezervacije = null;
     let semestarRezervacije = null;
 
-    if (salaBaza.periodicnaRezervacija == 1) 
-    {
-        redovnaRezervacija = true;
+    if (salaBaza.periodicnaRezervacija == 1) {
+        jeLiRedovna = true;
         danRezervacije = salaBaza.dan;
         semestarRezervacije = salaBaza.semestar;
     }
-    else {datumRezervacije = salaBaza.datum;}
+    else {
+		datumRezervacije = salaBaza.datum;
+	}
     db.Termin.create({
-        redovni: redovnaRezervacija,
+        redovni: jeLiRedovna,
         dan: danRezervacije,
         datum: datumRezervacije,
         semestar: semestarRezervacije,
         pocetak: salaBaza.pocetak,
         kraj: salaBaza.kraj
     }).then(podaciTermin =>{
-        idZaOsoblje = salaBaza.idOsobe;
-        idZaTermin = podaciTermin.dataValues.id; 
+        idOsobljeTmp = salaBaza.idOsobe;
+        idTerTmp = podaciTermin.dataValues.id; 
         }).then(object =>{
-            db.Sala.create({naziv: salaBaza.naziv, zaduzenaOsoba: idZaOsoblje}
-            ).then(nadenaSala => {
-                idZaSalu = nadenaSala.dataValues.id;
-                db.Rezervacija.create({termin: idZaTermin, osoba: idZaOsoblje, sala:idZaSalu});
+            db.Sala.create({naziv: salaBaza.naziv, zaduzenaOsoba: idOsobljeTmp}
+            ).then(foundSala => {
+                idSalaTmp = foundSala.dataValues.id;
+                db.Rezervacija.create({termin: idTerTmp, osoba: idOsobljeTmp, sala:idSalaTmp});
             });
         });
 }
@@ -356,11 +357,10 @@ app.get("/osobeUSali",function (req, res) {
     });
  }); 
  
- function splitDatum(datum)
-{
-    let pom1 = datum.split(".");
-    let danSale = pom1[0];
-    let mjesecSale = pom1[1];
+ function splitDatum(datum) {
+    let datumLista = datum.split(".");
+    let danSale = datumLista[0];
+    let mjesecSale = datumLista[1];
     mjesecSale--;
     mjesecSale = parseInt(mjesecSale);
 
