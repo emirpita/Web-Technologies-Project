@@ -350,11 +350,15 @@ let Kalendar = (function() {
 							else if (mjesecSale == 0 || (mjesecSale >= 9 && mjesecSale <= 11)) {
 								semestarRezervacije = "zimski";
 							}
+							
 
-							let noviDatum = kopijaMjesecSale + "." + poslaniDanSale + "." + godina;
-							let datumPomocna = new Date(noviDatum);
+							//let noviDatum = kopijaMjesecSale + "." + poslaniDanSale + "." + godina;
+							//let datumPomocna = new Date(noviDatum);
+							let datumPomocna = new Date(godina, kopijaMjesecSale, poslaniDanSale);
+							console.log("datum iz kog citam dan u sedmici: " + datumPomocna);
 							// ugradbena funkcija, vraca 0 za nedjelju, ostali dani regularno skor
 							let danSale = datumPomocna.getDay();
+							console.log("Dan sale klijent prije -- (kalendar, line 357): " + danSale);
 							if (danSale == 0) {
 								danSale = 6;
 							}

@@ -164,6 +164,7 @@ app.get('/getRezervacije',function (req, res) {
 	let datumPomocna = new Date(noviDatum);
 	let danSale = datumPomocna.getDay();
 	// validacija na serveru, moguce duplo smanjivanje dana
+	console.log("dan sale na serveru prije --(index, line 165): " + danSale);
 	if (danSale == 0) {
 		danSale = 6;
 	}
