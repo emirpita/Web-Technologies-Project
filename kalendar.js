@@ -290,6 +290,7 @@ let Kalendar = (function() {
 
 				//Da li su podaci popunjeni
 				if (pocetakZaDodavanje != "" && krajZaDodavanje != "") {
+					// daje broj dana u mjesecu, tekst iz kucice
 					let dan = parseInt(e.innerHTML);
 					if (dan != "") {
 						if (document.getElementById("periodicna").checked) periodicnaRezervacija = 1;
@@ -352,6 +353,7 @@ let Kalendar = (function() {
 
 							let noviDatum = kopijaMjesecSale + "." + poslaniDanSale + "." + godina;
 							let datumPomocna = new Date(noviDatum);
+							// ugradbena funkcija, vraca 0 za nedjelju, ostali dani regularno skor
 							let danSale = datumPomocna.getDay();
 							if (danSale == 0) {
 								danSale = 6;
@@ -359,6 +361,7 @@ let Kalendar = (function() {
 							else {
 								danSale--;
 							}
+							console.log("Dan sale klijent (kalendar, line 357): " + danSale);
 							// danSale = dajDan(danSale);
 
 							for (let i = 0; i < vsLista.length; i++) {
@@ -385,6 +388,7 @@ let Kalendar = (function() {
 										else {
 											dan2--;
 										}
+										console.log("Dan neke nadjene periodicne (manje bitno, kalendar line 385): " + dan2);
 										// dan2 = dajDan(dan2);
 
 										let semestarSaleIzListe = "";
@@ -426,6 +430,7 @@ let Kalendar = (function() {
 							else {
 								if (confirm("Da li želite da rezervisati ovaj termin?") == true) {
 									Pozivi.posaljiSaluNaServer(sala);
+									Kalendar.ucitajPodatke(psLista, vsLista); // mozda ovo
 									refreshKalendar(); // mozda ovo
 								}
 							}

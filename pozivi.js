@@ -60,7 +60,7 @@ let Pozivi = (function() {
 					Pozivi.ucitajPodatkeBaza();
 					Kalendar.ucitajPodatke(periodicnaZauzeca, vanrednaZauzeca);
 					refreshKalendar();
-				}
+				} // ovdje je odgovor servera: validacija i upisivanje se vrsi na serveru
 				else {
 					alert("Nije moguće rezervisati salu " + salaZaPoslati.naziv + " za navedeni datum " + datumZaDodavanjeDrugiFormat + " i termin od " + salaZaPoslati.pocetak + " do " + salaZaPoslati.kraj + "!");
 					// mozda suvisno, ali radi
