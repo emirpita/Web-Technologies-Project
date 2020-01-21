@@ -42,6 +42,15 @@ var vsLista = new Array();
 
 // pomocne funkcije globalnog opsega
 
+function prilagodiDan(dan) {
+    if(dan == 0) {
+        dan = 6;
+    } else {
+        dan--;
+    }
+	return dan;
+}
+
 function crtaj(mjesec) {
 	let kalendar = document.getElementsByClassName("kalendar")[0];
 	kalendar.innerHTML = "";
@@ -359,12 +368,7 @@ let Kalendar = (function() {
 							// ugradbena funkcija, vraca 0 za nedjelju, ostali dani regularno skor
 							let danSale = datumPomocna.getDay();
 							console.log("Dan sale klijent prije -- (kalendar, line 357): " + danSale);
-							if (danSale == 0) {
-								danSale = 6;
-							}
-							else {
-								danSale--;
-							}
+							danSale = prilagodiDan(danSale);
 							console.log("Dan sale klijent (kalendar, line 357): " + danSale);
 							// danSale = dajDan(danSale);
 
@@ -386,12 +390,7 @@ let Kalendar = (function() {
 										let novi1 = mjesec1 + "." + dan1 + "." + godina1;
 										let novi1Pom = new Date(novi1);
 										let dan2 = novi1Pom.getDay();
-										if (dan2 == 0) {
-											dan2 = 6;
-										}
-										else {
-											dan2--;
-										}
+										dan2 = prilagodiDan(dan2);
 										console.log("Dan neke nadjene periodicne (manje bitno, kalendar line 385): " + dan2);
 										// dan2 = dajDan(dan2);
 
