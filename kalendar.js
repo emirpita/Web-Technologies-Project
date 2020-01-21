@@ -388,7 +388,7 @@ let Kalendar = (function() {
 										mjesec1 = parseInt(mjesec1);
 										let godina1 = p1[2];
 										let novi1 = mjesec1 + "." + dan1 + "." + godina1;
-										let novi1Pom = new Date(novi1);
+										let novi1Pom = new Date(godina1, mjesec1, dan1);
 										let dan2 = novi1Pom.getDay();
 										dan2 = prilagodiDan(dan2);
 										console.log("Dan neke nadjene periodicne (manje bitno, kalendar line 385): " + dan2);
