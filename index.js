@@ -673,4 +673,5 @@ app.get("/slike", function(req, res) {
 	res.json({slike: listaSlikaServer});
 });*/
 
+
 app.listen(8080);
