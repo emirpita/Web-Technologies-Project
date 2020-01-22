@@ -114,13 +114,16 @@ app.get('/getRezervacije',function (req, res) {
         lista.forEach(function(rezultat){
              if (!rezultat.Termin.redovni) {
 
-				console.log("Osoblje: " + rezultat.Osoblje.ime + " " + rezultat.Osoblje.prezime);
-				
                 vanrednaZauzecaBaza.push({datum: rezultat.Termin.datum, pocetak: rezultat.Termin.pocetak,
                 kraj: rezultat.Termin.kraj, naziv: rezultat.Sala.naziv, predavac: rezultat.Osoblje.ime + " " + rezultat.Osoblje.prezime, 
                 uloga:rezultat.Osoblje.uloga});
              }
              else {
+
+				
+				console.log("Osoblje: " + rezultat.Osoblje.ime + " " + rezultat.Osoblje.prezime);
+				
+
                 periodicnaZauzecaBaza.push({dan: rezultat.Termin.dan , semestar: rezultat.Termin.semestar, 
                 pocetak: rezultat.Termin.pocetak, kraj: rezultat.Termin.kraj , naziv: rezultat.Sala.naziv, 
                 predavac: rezultat.Osoblje.ime + " " + rezultat.Osoblje.prezime, uloga: rezultat.Osoblje.uloga });
@@ -238,12 +241,14 @@ app.get('/getRezervacije',function (req, res) {
 		if (semestarRezervacije != "") {
 			if (req.body['periodicnaRezervacija'] == 1) {
 				let pomocnaSala = {
+					periodicnaRezervacija: 1,
 					dan: danSale,
 					semestar: semestarRezervacije,
 					pocetak: req.body['pocetak'],
 					kraj: req.body['kraj'],
 					naziv: req.body['naziv'],
-					predavac: req.body['predavac']
+					predavac: req.body['predavac'],
+					idOsobe: req.body['idOsobe']
 				};
 				upisiRezervacijuUBazu(pomocnaSala); // ovdje
 			}

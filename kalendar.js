@@ -88,6 +88,8 @@ function prethodni() {
 }
 
 function refreshKalendar() {
+	Pozivi.ucitajPodatkeBaza();
+	Kalendar.ucitajPodatke(psLista, vsLista);
 	crtaj(pomocnaMjesec);
 }
 
@@ -225,7 +227,7 @@ let Kalendar = (function() {
 	function iscrtajKalendarImpl(kalendarRef, mjesec) {
 		var sada = new Date();
 		var listaDana = ["PON", "UTO", "SRI", "CET", "PET", "SUB", "NED"];
-		var trenutnaGodina = sada.getFullYear();
+		var trenutnaGodina = 2019;
 		var prviDanUMjesecu = (new Date(trenutnaGodina + "-" + mjesec + "-01")).getDay() + 2;
 		var brojDana = parseInt(TRAJANJA_MJESECI_U_DANIMA.get(mjesec));
 
@@ -433,6 +435,7 @@ let Kalendar = (function() {
 							else {
 								if (confirm("Da li želite da rezervisati ovaj termin?") == true) {
 									Pozivi.posaljiSaluNaServer(sala);
+									Pozivi.ucitajPodatkeBaza();
 									Kalendar.ucitajPodatke(psLista, vsLista); // mozda ovo
 									refreshKalendar(); // mozda ovo
 								}
