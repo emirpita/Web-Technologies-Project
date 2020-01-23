@@ -69,7 +69,6 @@ let Pozivi = (function() {
 					refreshKalendar();
 					// moze i ovo
 				}
-
 			}
 		}
 	}
